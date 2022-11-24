@@ -1,6 +1,6 @@
 // pretend this is firebase, netlify, or auth0's code.
 // you shouldn't have to implement something like this in your own app
-
+import { URL } from "./utils/constants";
 const localStorageKey = "__auth_provider_token__";
 
 async function getToken() {
@@ -29,7 +29,6 @@ async function logout() {
 
 // an auth provider wouldn't use your client, they'd have their own
 // so that's why we're not just re-using the client
-const URL = "http://localhost:3001";
 
 async function client(endpoint, data) {
 	const config = {
@@ -38,15 +37,17 @@ async function client(endpoint, data) {
 		headers: { "Content-Type": "application/json" },
 	};
 
-	return window.fetch(`${URL}/${endpoint}`, config).then(async (response) => {
-		const data = await response.json();
-		console.log(data, response);
-		if (response.ok) {
-			return data;
-		} else {
-			return Promise.reject(data);
-		}
-	});
+	return window
+		.fetch(`${URL}/auth/${endpoint}`, config)
+		.then(async (response) => {
+			const data = await response.json();
+
+			if (response.ok) {
+				return data;
+			} else {
+				return Promise.reject(data);
+			}
+		});
 }
 
 export { getToken, login, register, logout, localStorageKey };

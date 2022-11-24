@@ -10,7 +10,7 @@ async function getUser() {
 
 	const token = await auth.getToken();
 	if (token) {
-		const data = await client("me", { token });
+		const data = await client("auth/me", { token });
 		user = { ...data, token };
 	}
 	return user;

@@ -1,5 +1,5 @@
 import * as auth from "../authProvider";
-const URL = "http://localhost:3001";
+import { URL } from "../utils/constants";
 
 async function client(
 	endpoint,
