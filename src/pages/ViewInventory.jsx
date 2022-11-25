@@ -144,7 +144,7 @@ const ViewInventory = () => {
 			</Table>
 
 			<button
-				className="btn btn-primary absolute bottom-5 right-5 text-3xl flex justify-center items-center text-white rounded-full w-12 h-12"
+				className="btn btn-primary fixed bottom-5 right-5 text-3xl flex justify-center items-center text-white rounded-full w-12 h-12"
 				onClick={() => setModalVisible(true)}
 			>
 				+
