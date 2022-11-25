@@ -21,7 +21,7 @@ function AuthenticatedApp() {
 
 function AppRoutes() {
 	return (
-		<div className="md:ml-52">
+		<div className="md:ml-52 mt-20 md:mt-0">
 			<Routes>
 				<Route path="/" element={<ViewInventory />} />
 				<Route path="/view-inventory" element={<ViewInventory />} />
