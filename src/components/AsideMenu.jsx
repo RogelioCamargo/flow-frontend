@@ -7,7 +7,7 @@ const AsideMenu = () => {
 	const location = useLocation();
 
 	return (
-		<aside className="hidden md:block w-52 bg-base-200 prose-sm">
+		<aside className="hidden md:block fixed top-0 w-52 bg-base-200 prose-sm h-screen">
 			<ul className="menu h-screen text-white font-bold p-0 relative">
 				<li className="flex items-center">
 					<Link to="/">
