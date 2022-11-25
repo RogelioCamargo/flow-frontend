@@ -9,26 +9,28 @@ import Product from "./pages/Product";
 
 function AuthenticatedApp() {
 	return (
-		<div>
+		<>
 			<Header />
-			<main className="md:flex">
+			<main>
 				<AsideMenu />
 				<AppRoutes />
 			</main>
-		</div>
+		</>
 	);
 }
 
 function AppRoutes() {
 	return (
-		<Routes>
-			<Route path="/" element={<ViewInventory />} />
-			<Route path="/view-inventory" element={<ViewInventory />} />
-			<Route path="/count-inventory" element={<CountInventory />} />
-			<Route path="/receive-inventory" element={<ReceiveInventory />} />
-			<Route path="/dashboard" element={<Dashboard />} />
-			<Route path="/product/:id" element={<Product />} />
-		</Routes>
+		<div className="md:ml-52">
+			<Routes>
+				<Route path="/" element={<ViewInventory />} />
+				<Route path="/view-inventory" element={<ViewInventory />} />
+				<Route path="/count-inventory" element={<CountInventory />} />
+				<Route path="/receive-inventory" element={<ReceiveInventory />} />
+				<Route path="/dashboard" element={<Dashboard />} />
+				<Route path="/product/:id" element={<Product />} />
+			</Routes>
+		</div>
 	);
 }
 
