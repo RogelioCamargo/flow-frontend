@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Modal from "../components/Modal";
+import {
+	Modal,
+	ModalContent,
+	ModalDismissButton,
+	ModalOpenButton,
+} from "../components/Modal";
 import { useCategories } from "../utils/categories";
 import {
 	useProduct,
@@ -18,13 +23,13 @@ const Product = () => {
 		...product,
 		category: product.category._id,
 	});
-	const [modalVisible, setModalVisible] = useState(false);
 	const { mutate: removeProduct } = useRemoveProduct();
 	const { mutate: updateProduct } = useUpdateProduct();
 
-	useEffect(() => {
-		setUpdatedProduct({ ...product, category: product.category._id });
-	}, [product]);
+	// FIX BUG IN DEPLOYMENT ENVIRONMENT
+	// useEffect(() => {
+	// 	setUpdatedProduct({ ...product, category: product.category._id });
+	// }, [product]);
 
 	const onChange = (event) => {
 		let { name, value } = event.target;
@@ -183,30 +188,30 @@ const Product = () => {
 				</div>
 			</div>
 			<div className="flex justify-between mt-5 mb-36">
-				<button className="btn btn-error" onClick={() => setModalVisible(true)}>
-					Remove Product
-				</button>
-				<button className="btn btn-primary" onClick={handleSaveChanges}>
+				<button className="btn btn-primary w-48" onClick={handleSaveChanges}>
 					Save Changes
 				</button>
-			</div>
-
-			{modalVisible ? (
 				<Modal>
-					<p>
-						Are you sure you want to remove <br />{" "}
-						<span className="font-bold text-primary">{product.name}</span>?
-					</p>
-					<div className="card-actions justify-end">
-						<button className="btn" onClick={() => setModalVisible(false)}>
-							Cancel
-						</button>
-						<button className="btn btn-error" onClick={handleRemoveProduct}>
-							Remove
-						</button>
-					</div>
+					<ModalOpenButton>
+						<button className="btn btn-error w-48">Remove Product</button>
+					</ModalOpenButton>
+					<ModalContent title="Confirm">
+						<ModalDismissButton />
+						<p className="mt-0">
+							Are you sure you want to remove <br />{" "}
+							<span className="font-bold text-primary">{product.name}</span>?
+						</p>
+						<div className="card-actions">
+							<button
+								className="btn btn-error btn-block"
+								onClick={handleRemoveProduct}
+							>
+								Remove
+							</button>
+						</div>
+					</ModalContent>
 				</Modal>
-			) : null}
+			</div>
 		</div>
 	);
 };
