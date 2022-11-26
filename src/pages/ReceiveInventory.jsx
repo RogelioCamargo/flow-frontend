@@ -40,7 +40,7 @@ const ReceiveInventory = () => {
 	const isConfirmDisabled = quantity === "";
 
 	return (
-		<div className="prose md:w-2/3 mx-auto">
+		<div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
 			<h2 className="text-center mt-10 mb-0">Receive Inventory</h2>
 			{orderedProducts.length === 0 ? (
 				<EmptyList message="No ordered products to receive." />
