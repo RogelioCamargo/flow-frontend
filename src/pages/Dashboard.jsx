@@ -119,7 +119,6 @@ const Dashboard = () => {
 							<th></th>
 							<th>Name</th>
 							<th>Date Ordered</th>
-							{/* <th>Action</th> */}
 						</tr>
 					</thead>
 					<tbody>

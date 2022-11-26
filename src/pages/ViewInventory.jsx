@@ -13,7 +13,7 @@ import {
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const initalNewProductState = {
+const initialNewProductDetails = {
 	name: "",
 	quantity: "",
 	category: "",
@@ -23,10 +23,10 @@ const ViewInventory = () => {
 	const products = useProducts();
 	const { mutate } = useCreateProduct();
 	const categories = useCategories();
-	const [newProduct, setNewProduct] = useState(initalNewProductState);
+	const [newProduct, setNewProduct] = useState(initialNewProductDetails);
 	const [category, setCategory] = useState("All");
 
-	const resetNewProduct = () => setNewProduct(initalNewProductState);
+	const resetNewProduct = () => setNewProduct(initialNewProductDetails);
 
 	const createOnClick = () => {
 		mutate({
@@ -41,7 +41,7 @@ const ViewInventory = () => {
 	};
 
 	const isConfirmDisabled = Object.values(newProduct).some(
-		(input) => input === "" || input === "Select One"
+		(input) => input === ""
 	);
 
 	const filteredProducts =
@@ -203,7 +203,9 @@ const ViewInventory = () => {
 									})
 								}
 							>
-								<option disabled>Select One</option>
+								<option disabled value="">
+									Select One
+								</option>
 								{categories.map((category) => (
 									<option key={category._id} value={category._id}>
 										{category.name}
