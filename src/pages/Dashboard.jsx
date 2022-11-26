@@ -49,7 +49,7 @@ const Dashboard = () => {
 		requestedProducts.length === 0 ? "btn-disabled" : "";
 
 	return (
-		<div className="prose md:w-2/3 mx-auto">
+		<div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
 			<h2 className="text-center mt-10">Requested Products</h2>
 			<div className="text-center">
 				<button

@@ -60,7 +60,7 @@ const CountInventory = () => {
 	};
 
 	return (
-		<div className="prose md:w-2/3 mx-auto">
+		<div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
 			<h2 className="text-center mt-10">Inventory Counts</h2>
 
 			<div className="flex flex-col items-center">
@@ -160,7 +160,7 @@ const CountInventory = () => {
 								<tr key={requestedProduct._id}>
 									<td>{index + 1}</td>
 									<td>
-										<div className="w-48 md:min-w-full break-words-and-wrap">{requestedProduct.name}</div>
+										<div className="w-42 md:min-w-full break-words-and-wrap">{requestedProduct.name}</div>
 										<div className="text-sm opacity-50">
 											{requestedProduct.category.name}
 										</div>

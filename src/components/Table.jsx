@@ -2,7 +2,7 @@ import React from "react";
 
 const Table = ({ children }) => {
 	return (
-		<div className="overflow-x-auto mt-0">
+		<div className="overflow-x-auto">
 			<table className="table w-full">{children}</table>
 		</div>
 	);

@@ -45,7 +45,7 @@ const ViewInventory = () => {
 			: products.filter((product) => category === product.category.name);
 
 	return (
-		<div className="prose lg:max-w-4xl mx-auto">
+		<div className="prose md:max-w-lg lg:max-w-4xl mx-auto mb-36">
 			<h2 className="text-center mt-10">View Inventory</h2>
 			<div className="px-1">
 				<select
@@ -64,7 +64,7 @@ const ViewInventory = () => {
 			<Table>
 				<thead>
 					<tr>
-						<th></th>
+						<td></td>
 						<th>Name</th>
 						<th>Quantity</th>
 						<th>Status</th>
@@ -85,7 +85,7 @@ const ViewInventory = () => {
 							<tr key={product._id}>
 								<td>{index + 1}</td>
 								<td>
-									<div className="w-48 font-bold md:w-full break-words-and-wrap">
+									<div className="w-44 font-bold md:w-full break-words-and-wrap">
 										<Link
 											className="no-underline"
 											to={`/product/${product._id}`}
@@ -144,7 +144,7 @@ const ViewInventory = () => {
 			</Table>
 
 			<button
-				className="btn btn-primary absolute bottom-5 right-5 text-3xl flex justify-center items-center text-white rounded-full w-12 h-12"
+				className="btn btn-primary fixed bottom-5 right-5 text-3xl flex justify-center items-center text-white rounded-full w-12 h-12"
 				onClick={() => setModalVisible(true)}
 			>
 				+

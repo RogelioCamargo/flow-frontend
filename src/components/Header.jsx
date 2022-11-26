@@ -6,7 +6,7 @@ const Header = () => {
 	const [dropdownVisible, setDropdownVisible] = useState(false);
 	const { logout } = useAuth();
 	return (
-		<header className="navbar bg-base-200 text-primary md:hidden">
+		<header className="navbar bg-base-200 text-primary md:hidden fixed top-0 z-50 h-12">
 			<div className="navbar-start">
 				<div
 					className="dropdown"
