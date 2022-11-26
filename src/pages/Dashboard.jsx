@@ -21,7 +21,7 @@ const Dashboard = () => {
 		(product) => product.status === "Ordered"
 	);
 
-	const handleMarkAsOrdered = (product) => {
+	const markProductAsOrdered = (product) => {
 		const updates = {
 			...product,
 			status: "Ordered",
@@ -35,7 +35,7 @@ const Dashboard = () => {
 		});
 	};
 
-	const handleMarkAllAsOrdered = () => {
+	const markAllProductsAsOrdered = () => {
 		markAllAsOrdered();
 		toast.success("Marked All As Ordered", {
 			position: "bottom-center",
@@ -60,7 +60,7 @@ const Dashboard = () => {
 				</button>
 				<button
 					className={`btn btn-sm ml-3 ${disableButtonIfEmpty}`}
-					onClick={handleMarkAllAsOrdered}
+					onClick={markAllProductsAsOrdered}
 				>
 					Mark All As Ordered
 				</button>
@@ -73,8 +73,8 @@ const Dashboard = () => {
 						<tr>
 							<th></th>
 							<th>Name</th>
-							<th>Date Requested</th>
 							<th>Action</th>
+							<th>Date Requested</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -93,15 +93,15 @@ const Dashboard = () => {
 											{product.category.name}
 										</div>
 									</td>
-									<td>{lastRequestedDate ?? "--"}</td>
 									<td>
 										<button
 											className="btn btn-primary btn-sm"
-											onClick={() => handleMarkAsOrdered(product)}
+											onClick={() => markProductAsOrdered(product)}
 										>
 											Mark as Ordered
 										</button>
 									</td>
+									<td>{lastRequestedDate ?? "--"}</td>
 								</tr>
 							);
 						})}
@@ -119,7 +119,6 @@ const Dashboard = () => {
 							<th></th>
 							<th>Name</th>
 							<th>Date Ordered</th>
-							{/* <th>Action</th> */}
 						</tr>
 					</thead>
 					<tbody>

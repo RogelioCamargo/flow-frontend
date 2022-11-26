@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import EmptyList from "../components/EmptyList";
-import Modal from "../components/Modal";
+import {
+	Modal,
+	ModalContent,
+	ModalDismissButton,
+	ModalOpenButton,
+} from "../components/Modal";
 import Table from "../components/Table";
 import { useProducts, useUpdateProduct } from "../utils/products";
 
 const ReceiveInventory = () => {
 	const products = useProducts();
 	const { mutate } = useUpdateProduct();
-	const [modalVisible, setModalVisible] = useState(false);
 	const [product, setProduct] = useState(null);
 	const [quantity, setQuantity] = useState("");
 
@@ -16,12 +20,7 @@ const ReceiveInventory = () => {
 		(product) => product.status === "Ordered"
 	);
 
-	const receiveOnClick = (orderedProduct) => {
-		setModalVisible(true);
-		setProduct(orderedProduct);
-	};
-
-	const confirmOnClick = () => {
+	const confirmReceivedQuantity = () => {
 		const updates = {
 			...product,
 			quantity: product.quantity + Number(quantity),
@@ -30,7 +29,6 @@ const ReceiveInventory = () => {
 		};
 
 		mutate(updates);
-		setModalVisible(false);
 		toast.success("Product Received", {
 			position: "bottom-center",
 			theme: "colored",
@@ -67,12 +65,44 @@ const ReceiveInventory = () => {
 										</div>
 									</td>
 									<td>
-										<button
-											className="btn btn-primary btn-sm"
-											onClick={() => receiveOnClick(product)}
-										>
-											Receive
-										</button>
+										<Modal>
+											<ModalOpenButton>
+												<button
+													className="btn btn-primary btn-sm"
+													onClick={() => setProduct(product)}
+												>
+													Receive
+												</button>
+											</ModalOpenButton>
+											<ModalContent title="Confirm">
+												<ModalDismissButton />
+												<p className="break-words-and-wrap mt-0 mb-3">
+													How many{" "}
+													<span className="font-bold text-secondary">
+														{product.name}
+													</span>{" "}
+													did we receive?
+												</p>
+												<div className="form-control w-full max-w-xs mb-3">
+													<input
+														type="number"
+														className="input input-bordered w-full max-w-xs"
+														value={quantity}
+														onChange={({ target }) => setQuantity(target.value)}
+													/>
+												</div>
+												<div className="card-actions">
+													<button
+														className={`btn btn-primary btn-block ${
+															isConfirmDisabled ? "btn-disabled" : ""
+														}`}
+														onClick={confirmReceivedQuantity}
+													>
+														Receive
+													</button>
+												</div>
+											</ModalContent>
+										</Modal>
 									</td>
 								</tr>
 							);
@@ -80,37 +110,6 @@ const ReceiveInventory = () => {
 					</tbody>
 				</Table>
 			)}
-
-			{modalVisible ? (
-				<Modal>
-					<h2 className="card-title my-2 justify-center">{product.name}</h2>
-					<div className="form-control w-full max-w-xs mb-3">
-						<label className="label">
-							<span className="label-text">Quantity Received:</span>
-						</label>
-						<input
-							type="number"
-							className="input input-bordered w-full max-w-xs"
-							value={quantity}
-							onChange={({ target }) => setQuantity(target.value)}
-						/>
-					</div>
-
-					<div className="card-actions justify-end">
-						<button className="btn" onClick={() => setModalVisible(false)}>
-							Cancel
-						</button>
-						<button
-							className={`btn btn-primary ${
-								isConfirmDisabled ? "btn-disabled" : ""
-							}`}
-							onClick={confirmOnClick}
-						>
-							Confirm
-						</button>
-					</div>
-				</Modal>
-			) : null}
 		</div>
 	);
 };

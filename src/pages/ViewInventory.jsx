@@ -4,31 +4,36 @@ import { useCategories } from "../utils/categories";
 import { useProducts } from "../utils/products";
 import formatDate from "../utils/formatter";
 import Table from "../components/Table";
-import Modal from "../components/Modal";
+import {
+	Modal,
+	ModalContent,
+	ModalDismissButton,
+	ModalOpenButton,
+} from "../components/Modal";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const initalNewProductState = {
+const initialNewProductDetails = {
 	name: "",
 	quantity: "",
-	category: "Select One",
+	category: "",
 };
 
 const ViewInventory = () => {
 	const products = useProducts();
 	const { mutate } = useCreateProduct();
 	const categories = useCategories();
-	const [modalVisible, setModalVisible] = useState(false);
-	const [newProduct, setNewProduct] = useState(initalNewProductState);
+	const [newProduct, setNewProduct] = useState(initialNewProductDetails);
 	const [category, setCategory] = useState("All");
+
+	const resetNewProduct = () => setNewProduct(initialNewProductDetails);
 
 	const createOnClick = () => {
 		mutate({
 			...newProduct,
 			quantity: Number(newProduct.quantity),
 		});
-		setNewProduct(initalNewProductState);
-		setModalVisible(false);
+		resetNewProduct();
 		toast.success("New Product Created", {
 			position: "bottom-center",
 			theme: "colored",
@@ -36,7 +41,7 @@ const ViewInventory = () => {
 	};
 
 	const isConfirmDisabled = Object.values(newProduct).some(
-		(input) => input === "" || input === "Select One"
+		(input) => input === ""
 	);
 
 	const filteredProducts =
@@ -45,7 +50,7 @@ const ViewInventory = () => {
 			: products.filter((product) => category === product.category.name);
 
 	return (
-		<div className="prose md:max-w-lg lg:max-w-4xl mx-auto mb-36">
+		<div className="prose md:max-w-lg lg:max-w-4xl mx-auto">
 			<h2 className="text-center mt-10">View Inventory</h2>
 			<div className="px-1">
 				<select
@@ -143,18 +148,14 @@ const ViewInventory = () => {
 				</tbody>
 			</Table>
 
-			<button
-				className="btn btn-primary fixed bottom-5 right-5 text-3xl flex justify-center items-center text-white rounded-full w-12 h-12"
-				onClick={() => setModalVisible(true)}
-			>
-				+
-			</button>
-
-			{modalVisible ? (
-				<Modal>
-					<h2 className="card-title my-2 justify-center">
-						New Product Details
-					</h2>
+			<Modal>
+				<ModalOpenButton>
+					<button className="btn btn-primary fixed bottom-5 right-5 text-3xl flex justify-center items-center text-white rounded-full w-12 h-12">
+						+
+					</button>
+				</ModalOpenButton>
+				<ModalContent title="New Product Details">
+					<ModalDismissButton onClick={resetNewProduct} />
 					<form>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
@@ -202,7 +203,9 @@ const ViewInventory = () => {
 									})
 								}
 							>
-								<option disabled>Select One</option>
+								<option disabled value="">
+									Select One
+								</option>
 								{categories.map((category) => (
 									<option key={category._id} value={category._id}>
 										{category.name}
@@ -211,12 +214,9 @@ const ViewInventory = () => {
 							</select>
 						</div>
 					</form>
-					<div className="card-actions justify-end mt-3">
-						<button className="btn" onClick={() => setModalVisible(false)}>
-							Cancel
-						</button>
+					<div className="card-actions mt-3">
 						<button
-							className={`btn btn-primary ${
+							className={`btn btn-primary btn-block ${
 								isConfirmDisabled ? "btn-disabled" : ""
 							}`}
 							onClick={createOnClick}
@@ -224,8 +224,8 @@ const ViewInventory = () => {
 							Create
 						</button>
 					</div>
-				</Modal>
-			) : null}
+				</ModalContent>
+			</Modal>
 		</div>
 	);
 };

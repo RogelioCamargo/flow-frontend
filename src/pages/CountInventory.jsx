@@ -9,11 +9,11 @@ const CountInventory = () => {
 	const [quantity, setQuantity] = useState("");
 	const [index, setIndex] = useState(0);
 
-	const redoOnClick = () => {
+	const restartCounts = () => {
 		setIndex(0);
 	};
-	const isEndOfList = index === products.length;
 
+	const isEndOfList = index === products.length;
 	const product = products[index];
 	const isPrevousDisabled = index <= 0;
 	const isNextDisabled = index >= products.length;
@@ -30,7 +30,7 @@ const CountInventory = () => {
 		setIndex((previousIndex) => previousIndex + 1);
 	};
 
-	const requestOnClick = () => {
+	const requestProduct = () => {
 		const updates = {
 			...product,
 			status: "Requested",
@@ -40,7 +40,7 @@ const CountInventory = () => {
 		mutate(updates);
 	};
 
-	const confirmOnClick = () => {
+	const confirmQuantity = () => {
 		const updates = {
 			...product,
 			quantity: Number(quantity),
@@ -50,7 +50,7 @@ const CountInventory = () => {
 		setQuantity("");
 	};
 
-	const removeOnClick = (productToRemove) => {
+	const removeProductFromRequested = (productToRemove) => {
 		const updates = {
 			...productToRemove,
 			status: "None",
@@ -70,7 +70,7 @@ const CountInventory = () => {
 							<h2 className="card-title">End of Inventory Counts</h2>
 							<p className="py-3">You're all done!</p>
 							<div className="card-actions justify-end">
-								<button className="btn btn-primary" onClick={redoOnClick}>
+								<button className="btn btn-primary" onClick={restartCounts}>
 									Start again
 								</button>
 							</div>
@@ -102,7 +102,7 @@ const CountInventory = () => {
 										className={`btn btn-secondary ${
 											product.status !== "None" ? "btn-disabled" : ""
 										}`}
-										onClick={requestOnClick}
+										onClick={requestProduct}
 									>
 										{product.status !== "None" ? product.status : "Request"}
 									</button>
@@ -110,7 +110,7 @@ const CountInventory = () => {
 										className={`btn btn-success ${
 											isConfirmDisabled ? "btn-disabled" : ""
 										}`}
-										onClick={confirmOnClick}
+										onClick={confirmQuantity}
 									>
 										Confirm
 									</button>
@@ -160,7 +160,9 @@ const CountInventory = () => {
 								<tr key={requestedProduct._id}>
 									<td>{index + 1}</td>
 									<td>
-										<div className="w-42 md:min-w-full break-words-and-wrap">{requestedProduct.name}</div>
+										<div className="w-42 md:min-w-full break-words-and-wrap">
+											{requestedProduct.name}
+										</div>
 										<div className="text-sm opacity-50">
 											{requestedProduct.category.name}
 										</div>
@@ -168,7 +170,9 @@ const CountInventory = () => {
 									<td>
 										<button
 											className="btn btn-error btn-sm"
-											onClick={() => removeOnClick(requestedProduct)}
+											onClick={() =>
+												removeProductFromRequested(requestedProduct)
+											}
 										>
 											Unrequest
 										</button>
@@ -179,13 +183,6 @@ const CountInventory = () => {
 					</tbody>
 				</Table>
 			)}
-			{/* <div className="toast toast-center">
-				<div className="alert alert-success">
-					<div className="w-80">
-						<span>Message sent successfully.</span>
-					</div>
-				</div>
-			</div> */}
 		</div>
 	);
 };
