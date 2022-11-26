@@ -50,7 +50,7 @@ const ViewInventory = () => {
 			: products.filter((product) => category === product.category.name);
 
 	return (
-		<div className="prose md:max-w-lg lg:max-w-4xl mx-auto mb-36">
+		<div className="prose md:max-w-lg lg:max-w-4xl mx-auto">
 			<h2 className="text-center mt-10">View Inventory</h2>
 			<div className="px-1">
 				<select

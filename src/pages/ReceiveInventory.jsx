@@ -20,7 +20,7 @@ const ReceiveInventory = () => {
 		(product) => product.status === "Ordered"
 	);
 
-	const confirmOnClick = () => {
+	const confirmReceivedQuantity = () => {
 		const updates = {
 			...product,
 			quantity: product.quantity + Number(quantity),
@@ -96,7 +96,7 @@ const ReceiveInventory = () => {
 														className={`btn btn-primary btn-block ${
 															isConfirmDisabled ? "btn-disabled" : ""
 														}`}
-														onClick={confirmOnClick}
+														onClick={confirmReceivedQuantity}
 													>
 														Receive
 													</button>
