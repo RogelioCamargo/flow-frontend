@@ -48,7 +48,7 @@ function useMarkAllAsOrdered() {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: () =>
-			client(`api/products/move-all-to-ordered`, { method: "POST" }),
+			client(`api/products/order-all`, { method: "POST" }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["products"] });
 		},

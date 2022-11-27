@@ -1,6 +1,6 @@
 // pretend this is firebase, netlify, or auth0's code.
 // you shouldn't have to implement something like this in your own app
-import { URL } from "./utils/constants";
+import { URL } from "./constants";
 const localStorageKey = "__auth_provider_token__";
 
 async function getToken() {

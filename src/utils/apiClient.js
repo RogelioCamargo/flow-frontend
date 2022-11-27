@@ -1,5 +1,5 @@
 import * as auth from "../authProvider";
-import { URL } from "../utils/constants";
+import { URL } from "../constants";
 
 async function client(
 	endpoint,
