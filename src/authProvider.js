@@ -1,6 +1,5 @@
 // pretend this is firebase, netlify, or auth0's code.
 // you shouldn't have to implement something like this in your own app
-import { URL } from "./constants";
 const localStorageKey = "__auth_provider_token__";
 
 async function getToken() {
@@ -38,7 +37,7 @@ async function client(endpoint, data) {
 	};
 
 	return window
-		.fetch(`${URL}/auth/${endpoint}`, config)
+		.fetch(`${process.env.REACT_APP_BACKEND_URL}/auth/${endpoint}`, config)
 		.then(async (response) => {
 			const data = await response.json();
 

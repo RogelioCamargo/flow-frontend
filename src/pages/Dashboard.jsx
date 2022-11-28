@@ -8,7 +8,6 @@ import {
 	useMarkAllAsOrdered,
 } from "../utils/products";
 import { toast } from "react-toastify";
-import { WEBHOOK_SLACK_URL } from "../slackApi";
 
 const Dashboard = () => {
 	const products = useProducts();
@@ -83,7 +82,7 @@ const Dashboard = () => {
 			},
 		});
 
-		fetch(WEBHOOK_SLACK_URL, {
+		fetch(process.env.REACT_APP_SLACK_WEBHOOK_API, {
 			method: "POST",
 			body: JSON.stringify({ blocks }),
 		});

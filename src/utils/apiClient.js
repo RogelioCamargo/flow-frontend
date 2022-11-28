@@ -1,5 +1,4 @@
 import * as auth from "../authProvider";
-import { URL } from "../constants";
 
 async function client(
 	endpoint,
@@ -16,20 +15,22 @@ async function client(
 		...customConfig,
 	};
 
-	return window.fetch(`${URL}/${endpoint}`, config).then(async (response) => {
-		if (response.status === 401) {
-			await auth.logout();
-			// refresh the page for them
-			window.location.assign(window.location);
-			return Promise.reject({ message: "Please re-authenticate." });
-		}
-		const data = await response.json();
-		if (response.ok) {
-			return data;
-		} else {
-			return Promise.reject(data);
-		}
-	});
+	return window
+		.fetch(`${process.env.REACT_APP_BACKEND_URL}/${endpoint}`, config)
+		.then(async (response) => {
+			if (response.status === 401) {
+				await auth.logout();
+				// refresh the page for them
+				window.location.assign(window.location);
+				return Promise.reject({ message: "Please re-authenticate." });
+			}
+			const data = await response.json();
+			if (response.ok) {
+				return data;
+			} else {
+				return Promise.reject(data);
+			}
+		});
 }
 
 export { client };
