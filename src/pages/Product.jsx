@@ -1,6 +1,7 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Input } from "../components/Input";
 import {
 	Modal,
 	ModalContent,
@@ -54,31 +55,16 @@ const Product = () => {
 			<h2 className="text-center mt-10 mb-0">Edit Product</h2>
 			<form onSubmit={updateProductDetails}>
 				{/* Row 1 */}
-				<div className="form-control w-full">
-					<label className="label">
-						<span className="label-text">Name</span>
-					</label>
-					<input
-						type="text"
+				<Input label="Name" defaultValue={product.name} name="name" />
+				{/* Row 2 */}
+				<div className="md:grid md:grid-cols-2 md:gap-1">
+					<Input
+						type="number"
+						label="Quantity"
 						defaultValue={product.name}
 						name="name"
-						className="input input-bordered w-full"
 					/>
-				</div>
-				{/* Row 2 */}
-				<div className="md:flex md:justify-between">
 					<div className="form-control w-full">
-						<label className="label">
-							<span className="label-text">Quantity</span>
-						</label>
-						<input
-							type="number"
-							defaultValue={product.quantity}
-							name="quantity"
-							className="input input-bordered w-full"
-						/>
-					</div>
-					<div className="form-control w-full md:ml-3">
 						<label className="label">
 							<span className="label-text">Category</span>
 						</label>
@@ -97,66 +83,39 @@ const Product = () => {
 					</div>
 				</div>
 				{/* Row 3 */}
-				<div className="form-control w-full">
-					<label className="label">
-						<span className="label-text">Purchase Link</span>
-					</label>
-					<input
-						type="text"
-						defaultValue={product?.purchaseLink ?? ""}
-						name="purchaseLink"
-						className="input input-bordered w-full"
+				<Input
+					label="Purchase Link"
+					defaultValue={product?.purchaseLink ?? ""}
+					name="purchaseLink"
+				/>
+				{/* Row 4 */}
+				<div className="md:grid md:grid-cols-2 md:gap-1">
+					<Input
+						type="number"
+						label="Low Quantity"
+						defaultValue={product?.lowQuantity ?? ""}
+						name="lowQuantity"
+					/>
+					<Input
+						type="number"
+						label="Reorder Quantity"
+						defaultValue={product?.reorderQuantity ?? ""}
+						name="reorderQuantity"
 					/>
 				</div>
-				{/* Row 4 */}
-				<div className="md:flex md:justify-between">
-					<div className="form-control w-full">
-						<label className="label">
-							<span className="label-text">Low Quantity</span>
-						</label>
-						<input
-							type="number"
-							defaultValue={product?.lowQuantity ?? ""}
-							name="lowQuantity"
-							className="input input-bordered w-full"
-						/>
-					</div>
-					<div className="form-control w-full md:ml-3">
-						<label className="label">
-							<span className="label-text">Reorder Quantity</span>
-						</label>
-						<input
-							type="number"
-							defaultValue={product?.reorderQuantity ?? ""}
-							name="reorderQuantity"
-							className="input input-bordered w-full"
-						/>
-					</div>
-				</div>
 				{/* Row 5 */}
-				<div className="md:flex md:justify-between">
-					<div className="form-control w-full">
-						<label className="label">
-							<span className="label-text">Units Per Container</span>
-						</label>
-						<input
-							type="number"
-							defaultValue={product?.unitsPerContainer ?? ""}
-							name="unitsPerContainer"
-							className="input input-bordered w-full"
-						/>
-					</div>
-					<div className="form-control w-full md:ml-3">
-						<label className="label">
-							<span className="label-text">Unit of Measure</span>
-						</label>
-						<input
-							type="text"
-							defaultValue={product?.unitOfMeasure ?? ""}
-							name="unitOfMeasure"
-							className="input input-bordered w-full"
-						/>
-					</div>
+				<div className="md:grid md:grid-cols-2 md:gap-1">
+					<Input
+						type="number"
+						label="Units Per Container"
+						defaultValue={product?.unitsPerContainer ?? ""}
+						name="unitsPerContainer"
+					/>
+					<Input
+						label="Unit of Measure"
+						defaultValue={product?.unitOfMeasure ?? ""}
+						name="unitOfMeasure"
+					/>
 				</div>
 				<button type="submit" className="btn btn-primary w-48 mt-3">
 					Save Changes

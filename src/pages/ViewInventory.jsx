@@ -12,6 +12,7 @@ import {
 } from "../components/Modal";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Input } from "../components/Input";
 
 const initialNewProductDetails = {
 	name: "",
@@ -58,7 +59,7 @@ const ViewInventory = () => {
 					value={category}
 					onChange={({ target }) => setCategory(target.value)}
 				>
-					<option>All</option>
+					<option value="All">All</option>
 					{categories.map((category) => (
 						<option key={category._id} value={category.name}>
 							{category.name}
@@ -157,38 +158,27 @@ const ViewInventory = () => {
 				<ModalContent title="New Product Details">
 					<ModalDismissButton onClick={resetNewProduct} />
 					<form>
-						<div className="form-control w-full max-w-xs">
-							<label className="label">
-								<span className="label-text">Name</span>
-							</label>
-							<input
-								type="text"
-								className="input input-bordered w-full max-w-xs"
-								value={newProduct.name}
-								onChange={(event) =>
-									setNewProduct({
-										...newProduct,
-										name: event.target.value,
-									})
-								}
-							/>
-						</div>
-						<div className="form-control w-full max-w-xs">
-							<label className="label">
-								<span className="label-text">Quantity</span>
-							</label>
-							<input
-								type="number"
-								className="input input-bordered w-full max-w-xs"
-								value={newProduct.quantity}
-								onChange={(event) =>
-									setNewProduct({
-										...newProduct,
-										quantity: event.target.value,
-									})
-								}
-							/>
-						</div>
+						<Input
+							label="Name"
+							value={newProduct.name}
+							onChange={(event) =>
+								setNewProduct({
+									...newProduct,
+									name: event.target.value,
+								})
+							}
+						/>
+						<Input
+							type="number"
+							label="Quantity"
+							value={newProduct.quantity}
+							onChange={(event) =>
+								setNewProduct({
+									...newProduct,
+									quantity: event.target.value,
+								})
+							}
+						/>
 						<div className="form-control w-full max-w-xs">
 							<label className="label">
 								<span className="label-text">Category</span>

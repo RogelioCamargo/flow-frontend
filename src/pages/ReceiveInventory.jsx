@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import EmptyList from "../components/EmptyList";
+import { Input } from "../components/Input";
 import {
 	Modal,
 	ModalContent,
@@ -76,7 +77,7 @@ const ReceiveInventory = () => {
 												</button>
 											</ModalOpenButton>
 											<ModalContent title="Confirm">
-												<ModalDismissButton />
+												<ModalDismissButton onClick={() => setQuantity("")} />
 												<p className="break-words-and-wrap mt-0 mb-3">
 													How many{" "}
 													<span className="font-bold text-secondary">
@@ -84,15 +85,14 @@ const ReceiveInventory = () => {
 													</span>{" "}
 													did we receive?
 												</p>
-												<div className="form-control w-full max-w-xs mb-3">
-													<input
-														type="number"
-														className="input input-bordered w-full max-w-xs"
-														value={quantity}
-														onChange={({ target }) => setQuantity(target.value)}
-													/>
-												</div>
-												<div className="card-actions">
+
+												<Input
+													type="number"
+													value={quantity}
+													onChange={({ target }) => setQuantity(target.value)}
+												/>
+
+												<div className="card-actions mt-3">
 													<button
 														className={`btn btn-primary btn-block ${
 															isConfirmDisabled ? "btn-disabled" : ""

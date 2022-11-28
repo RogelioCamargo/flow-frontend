@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import EmptyList from "../components/EmptyList";
+import { Input } from "../components/Input";
 import Table from "../components/Table";
 import { useProducts, useUpdateProduct } from "../utils/products";
 
@@ -81,22 +82,13 @@ const CountInventory = () => {
 						<div className="card bg-gray-800 w-96">
 							<div className="card-body">
 								<h3 className="card-title">{product.name}</h3>
-								<div className="form-control w-full max-w-xs">
-									<label className="label">
-										<span className="label-text">Quantity</span>
-									</label>
-									<input
-										type="number"
-										className="input input-bordered w-full max-w-xs"
-										value={quantity}
-										onChange={({ target }) => setQuantity(target.value)}
-									/>
-									<label className="label">
-										<span className="label-text-alt">
-											Current Quantity: {product.quantity}
-										</span>
-									</label>
-								</div>
+								<Input
+									type="number"
+									label="Quantity"
+									sublabel={`Current Quantity: ${product.quantity}`}
+									value={quantity}
+									onChange={({ target }) => setQuantity(target.value)}
+								/>
 								<div className="card-actions justify-end">
 									<button
 										className={`btn btn-secondary ${
