@@ -43,7 +43,55 @@ const Dashboard = () => {
 		});
 	};
 
-	const notifyManager = () => {};
+	const notifyManager = () => {
+		const blocks = [
+			{
+				type: "section",
+				text: {
+					type: "mrkdwn",
+					text: `\n\n\n*New Request - ${formatDate(new Date())}*`,
+				},
+			},
+			{
+				type: "divider",
+			},
+		];
+
+		requestedProducts.forEach((product) => {
+			let productName;
+			if (product?.purchaseLink)
+				productName = `<${product.purchaseLink}|*${product.name}*>`;
+			else productName = `*${product.name}*`;
+
+			const newBlock = {
+				type: "section",
+				text: {
+					type: "mrkdwn",
+					text: `${productName}\nQuantity: ${product.quantity}`,
+				},
+			};
+
+			blocks.push(newBlock, { type: "divider" });
+		});
+
+		blocks.push({
+			type: "section",
+			text: {
+				type: "mrkdwn",
+				text: `<https://flow-switch.netlify.app/|Open App>\n\n`,
+			},
+		});
+
+		fetch(process.env.REACT_APP_SLACK_WEBHOOK_API, {
+			method: "POST",
+			body: JSON.stringify({ blocks }),
+		});
+
+		toast.success("Manager Notified", {
+			position: "bottom-center",
+			theme: "colored",
+		});
+	};
 
 	const disableButtonIfEmpty =
 		requestedProducts.length === 0 ? "btn-disabled" : "";

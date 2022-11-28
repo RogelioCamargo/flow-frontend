@@ -33,6 +33,7 @@ const ReceiveInventory = () => {
 			position: "bottom-center",
 			theme: "colored",
 		});
+		setQuantity("");
 	};
 
 	const isConfirmDisabled = quantity === "";
