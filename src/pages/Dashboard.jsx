@@ -1,6 +1,6 @@
 import React from "react";
 import EmptyList from "../components/EmptyList";
-import Table from "../components/Table";
+import { ProductName, ProductTable } from "../components/ProductTable";
 import formatDate from "../utils/formatter";
 import {
 	useProducts,
@@ -116,7 +116,7 @@ const Dashboard = () => {
 			{requestedProducts.length === 0 ? (
 				<EmptyList message="No requested products to show." />
 			) : (
-				<Table>
+				<ProductTable>
 					<thead>
 						<tr>
 							<th></th>
@@ -134,12 +134,7 @@ const Dashboard = () => {
 								<tr key={product._id}>
 									<td>{index + 1}</td>
 									<td>
-										<div className="w-48 md:min-w-full break-words-and-wrap">
-											{product.name}
-										</div>
-										<div className="text-sm opacity-50">
-											{product.category.name}
-										</div>
+										<ProductName product={product} />
 									</td>
 									<td>
 										<button
@@ -154,14 +149,14 @@ const Dashboard = () => {
 							);
 						})}
 					</tbody>
-				</Table>
+				</ProductTable>
 			)}
 
 			<h2 className="text-center mb-0">Ordered Products</h2>
 			{orderedProducts.length === 0 ? (
 				<EmptyList message="No ordered products to show." />
 			) : (
-				<Table>
+				<ProductTable>
 					<thead>
 						<tr>
 							<th></th>
@@ -178,19 +173,14 @@ const Dashboard = () => {
 								<tr key={product._id}>
 									<td>{index + 1}</td>
 									<td>
-										<div className="w-48 md:min-w-full break-words-and-wrap">
-											{product.name}
-										</div>
-										<div className="text-sm opacity-50">
-											{product.category.name}
-										</div>
+										<ProductName product={product} />
 									</td>
 									<td>{lastOrderedDate ?? "--"}</td>
 								</tr>
 							);
 						})}
 					</tbody>
-				</Table>
+				</ProductTable>
 			)}
 		</div>
 	);

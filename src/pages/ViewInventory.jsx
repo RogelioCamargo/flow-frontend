@@ -3,14 +3,13 @@ import { useCreateProduct } from "../utils/products";
 import { useCategories } from "../utils/categories";
 import { useProducts } from "../utils/products";
 import formatDate from "../utils/formatter";
-import Table from "../components/Table";
+import { ProductName, ProductTable } from "../components/ProductTable";
 import {
 	Modal,
 	ModalContent,
 	ModalDismissButton,
 	ModalOpenButton,
 } from "../components/Modal";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Input } from "../components/Input";
 import Select from "../components/Select";
@@ -67,7 +66,7 @@ const ViewInventory = () => {
 					))}
 				</Select>
 			</div>
-			<Table>
+			<ProductTable>
 				<thead>
 					<tr>
 						<td></td>
@@ -91,17 +90,7 @@ const ViewInventory = () => {
 							<tr key={product._id}>
 								<td>{index + 1}</td>
 								<td>
-									<div className="w-44 font-bold md:w-full break-words-and-wrap">
-										<Link
-											className="no-underline"
-											to={`/product/${product._id}`}
-										>
-											{product.name}
-										</Link>
-									</div>
-									<div className="text-sm opacity-50">
-										{product.category.name}
-									</div>
+									<ProductName product={product} />
 								</td>
 								<td>
 									<div>{`${product.quantity} ${product?.unitOfMeasure ?? ""}${
@@ -147,7 +136,7 @@ const ViewInventory = () => {
 						);
 					})}
 				</tbody>
-			</Table>
+			</ProductTable>
 
 			<Modal>
 				<ModalOpenButton>

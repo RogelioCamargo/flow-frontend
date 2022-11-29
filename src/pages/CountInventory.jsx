@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import EmptyList from "../components/EmptyList";
 import { Input } from "../components/Input";
-import Table from "../components/Table";
+import { ProductName, ProductTable } from "../components/ProductTable";
 import { useProducts, useUpdateProduct } from "../utils/products";
 
 const CountInventory = () => {
@@ -138,7 +138,7 @@ const CountInventory = () => {
 			{requestedProducts.length === 0 ? (
 				<EmptyList message="Products you request will be displayed here." />
 			) : (
-				<Table>
+				<ProductTable>
 					<thead>
 						<tr>
 							<th></th>
@@ -152,12 +152,7 @@ const CountInventory = () => {
 								<tr key={requestedProduct._id}>
 									<td>{index + 1}</td>
 									<td>
-										<div className="w-42 md:min-w-full break-words-and-wrap">
-											{requestedProduct.name}
-										</div>
-										<div className="text-sm opacity-50">
-											{requestedProduct.category.name}
-										</div>
+										<ProductName product={product} />
 									</td>
 									<td>
 										<button
@@ -173,7 +168,7 @@ const CountInventory = () => {
 							);
 						})}
 					</tbody>
-				</Table>
+				</ProductTable>
 			)}
 		</div>
 	);

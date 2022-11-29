@@ -8,7 +8,7 @@ import {
 	ModalDismissButton,
 	ModalOpenButton,
 } from "../components/Modal";
-import Table from "../components/Table";
+import { ProductName, ProductTable } from "../components/ProductTable";
 import { useProducts, useUpdateProduct } from "../utils/products";
 
 const ReceiveInventory = () => {
@@ -45,7 +45,7 @@ const ReceiveInventory = () => {
 			{orderedProducts.length === 0 ? (
 				<EmptyList message="No ordered products to receive." />
 			) : (
-				<Table>
+				<ProductTable>
 					<thead>
 						<tr>
 							<th></th>
@@ -59,12 +59,7 @@ const ReceiveInventory = () => {
 								<tr key={product._id}>
 									<td>{index + 1}</td>
 									<td>
-										<div className="w-48 md:min-w-full break-words-and-wrap">
-											{product.name}
-										</div>
-										<div className="text-sm opacity-50">
-											{product.category.name}
-										</div>
+										<ProductName product={product} />
 									</td>
 									<td>
 										<Modal>
@@ -85,23 +80,19 @@ const ReceiveInventory = () => {
 													</span>{" "}
 													did we receive?
 												</p>
-
 												<Input
 													type="number"
 													value={quantity}
 													onChange={({ target }) => setQuantity(target.value)}
 												/>
-
-												<div className="card-actions mt-3">
-													<button
-														className={`btn btn-primary btn-block ${
-															isConfirmDisabled ? "btn-disabled" : ""
-														}`}
-														onClick={confirmReceivedQuantity}
-													>
-														Receive
-													</button>
-												</div>
+												<button
+													className={`btn btn-primary btn-block mt-3 ${
+														isConfirmDisabled ? "btn-disabled" : ""
+													}`}
+													onClick={confirmReceivedQuantity}
+												>
+													Receive
+												</button>
 											</ModalContent>
 										</Modal>
 									</td>
@@ -109,7 +100,7 @@ const ReceiveInventory = () => {
 							);
 						})}
 					</tbody>
-				</Table>
+				</ProductTable>
 			)}
 		</div>
 	);
