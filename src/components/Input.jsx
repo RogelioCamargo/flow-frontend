@@ -4,6 +4,7 @@ const Input = ({
 	label = null,
 	sublabel = null,
 	type = "text",
+	className = "",
 	...props
 } = {}) => {
 	return (
@@ -15,7 +16,7 @@ const Input = ({
 			) : null}
 			<input
 				type={type}
-				className="input input-bordered w-full"
+				className={`input input-bordered w-full ${className}`}
 				{...props}
 			/>
 			{sublabel ? (
@@ -27,4 +28,4 @@ const Input = ({
 	);
 };
 
-export { Input };
+export default Input;
