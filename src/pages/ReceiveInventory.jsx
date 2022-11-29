@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import EmptyList from "../components/EmptyList";
-import { Input } from "../components/Input";
+import Input from "../components/Input";
 import {
 	Modal,
 	ModalContent,

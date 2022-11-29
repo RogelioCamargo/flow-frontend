@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import EmptyList from "../components/EmptyList";
-import { Input } from "../components/Input";
+import Input from "../components/Input";
 import { ProductName, ProductTable } from "../components/ProductTable";
 import { useProducts, useUpdateProduct } from "../utils/products";
 

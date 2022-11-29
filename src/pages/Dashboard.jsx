@@ -1,7 +1,7 @@
 import React from "react";
 import EmptyList from "../components/EmptyList";
 import { ProductName, ProductTable } from "../components/ProductTable";
-import formatDate from "../utils/formatter";
+import {formatDate} from "../utils/formatter";
 import {
 	useProducts,
 	useUpdateProduct,

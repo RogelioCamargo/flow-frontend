@@ -13,4 +13,4 @@ const formatDate = (date) => {
 	});
 };
 
-export default formatDate;
+export { formatDate };
