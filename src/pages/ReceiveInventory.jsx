@@ -10,6 +10,7 @@ import {
 } from "../components/Modal";
 import { ProductName, ProductTable } from "../components/ProductTable";
 import { useProducts, useUpdateProduct } from "../utils/products";
+import { sortByProductName } from "../utils/sortter";
 
 const ReceiveInventory = () => {
 	const products = useProducts();
@@ -54,7 +55,7 @@ const ReceiveInventory = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{orderedProducts.map((product, index) => {
+						{sortByProductName(orderedProducts).map((product, index) => {
 							return (
 								<tr key={product._id}>
 									<td>{index + 1}</td>

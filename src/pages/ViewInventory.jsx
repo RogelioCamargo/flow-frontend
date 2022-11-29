@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import Input from "../components/Input";
 import Select from "../components/Select";
 import { LinkIcon } from "../components/icons";
+import { sortByProductName } from "../utils/sortter";
 
 const initialNewProductDetails = {
 	name: "",
@@ -91,57 +92,53 @@ const ViewInventory = () => {
 					</tr>
 				</thead>
 				<tbody>
-					{productsFilteredBySearch
-						.sort((a, b) => {
-							return a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1;
-						})
-						.map((product, index) => {
-							const lastOrderedDate =
-								formatDate(product?.lastOrderedDate) ?? "--";
+					{sortByProductName(productsFilteredBySearch).map((product, index) => {
+						const lastOrderedDate =
+							formatDate(product?.lastOrderedDate) ?? "--";
 
-							const lastReceivedDate =
-								formatDate(product?.lastReceivedDate) ?? "--";
+						const lastReceivedDate =
+							formatDate(product?.lastReceivedDate) ?? "--";
 
-							return (
-								<tr key={product._id}>
-									<td>{index + 1}</td>
-									<td>
-										<ProductName product={product} />
-									</td>
-									<td>
-										<div>{`${product.quantity} ${product?.unitOfMeasure ?? ""}${
-											product.quantity > 1 && product?.unitOfMeasure ? "s" : ""
-										}`}</div>
-										{product?.unitsPerContainer ? (
-											<div className="text-sm opacity-50">
-												{`${product.unitsPerContainer} / 
+						return (
+							<tr key={product._id}>
+								<td>{index + 1}</td>
+								<td>
+									<ProductName product={product} />
+								</td>
+								<td>
+									<div>{`${product.quantity} ${product?.unitOfMeasure ?? ""}${
+										product.quantity > 1 && product?.unitOfMeasure ? "s" : ""
+									}`}</div>
+									{product?.unitsPerContainer ? (
+										<div className="text-sm opacity-50">
+											{`${product.unitsPerContainer} / 
 												${product?.unitOfMeasure ?? "Container"}`}
-											</div>
-										) : null}
-										{product.quantity < product?.lowQuantity ? (
-											<div className="badge badge-error badge-xs">Low</div>
-										) : null}
-									</td>
-									<td>{product.status === "None" ? "--" : product.status}</td>
-									<td>{lastOrderedDate}</td>
-									<td>{lastReceivedDate}</td>
-									<td>
-										{product?.purchaseLink ? (
-											<a
-												className="no-underline"
-												target="_blank"
-												rel="noreferrer"
-												href={`${product.purchaseLink}`}
-											>
-												<LinkIcon />
-											</a>
-										) : (
-											"--"
-										)}
-									</td>
-								</tr>
-							);
-						})}
+										</div>
+									) : null}
+									{product.quantity < product?.lowQuantity ? (
+										<div className="badge badge-error badge-xs">Low</div>
+									) : null}
+								</td>
+								<td>{product.status === "None" ? "--" : product.status}</td>
+								<td>{lastOrderedDate}</td>
+								<td>{lastReceivedDate}</td>
+								<td>
+									{product?.purchaseLink ? (
+										<a
+											className="no-underline"
+											target="_blank"
+											rel="noreferrer"
+											href={`${product.purchaseLink}`}
+										>
+											<LinkIcon />
+										</a>
+									) : (
+										"--"
+									)}
+								</td>
+							</tr>
+						);
+					})}
 				</tbody>
 			</ProductTable>
 

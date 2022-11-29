@@ -1,13 +1,14 @@
 import React from "react";
 import EmptyList from "../components/EmptyList";
 import { ProductName, ProductTable } from "../components/ProductTable";
-import {formatDate} from "../utils/formatter";
+import { formatDate } from "../utils/formatter";
 import {
 	useProducts,
 	useUpdateProduct,
 	useMarkAllAsOrdered,
 } from "../utils/products";
 import { toast } from "react-toastify";
+import { sortByProductName } from "../utils/sortter";
 
 const Dashboard = () => {
 	const products = useProducts();
@@ -126,7 +127,7 @@ const Dashboard = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{requestedProducts.map((product, index) => {
+						{sortByProductName(requestedProducts).map((product, index) => {
 							let lastRequestedDate =
 								formatDate(product?.lastRequestedDate) ?? null;
 
@@ -165,7 +166,7 @@ const Dashboard = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{orderedProducts.map((product, index) => {
+						{sortByProductName(orderedProducts).map((product, index) => {
 							let lastOrderedDate =
 								formatDate(product?.lastOrderedDate) ?? null;
 

@@ -3,6 +3,7 @@ import EmptyList from "../components/EmptyList";
 import Input from "../components/Input";
 import { ProductName, ProductTable } from "../components/ProductTable";
 import { useProducts, useUpdateProduct } from "../utils/products";
+import { sortByProductName } from "../utils/sortter";
 
 const CountInventory = () => {
 	const products = useProducts();
@@ -147,26 +148,28 @@ const CountInventory = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{requestedProducts.map((requestedProduct, index) => {
-							return (
-								<tr key={requestedProduct._id}>
-									<td>{index + 1}</td>
-									<td>
-										<ProductName product={product} />
-									</td>
-									<td>
-										<button
-											className="btn btn-error btn-sm"
-											onClick={() =>
-												removeProductFromRequested(requestedProduct)
-											}
-										>
-											Unrequest
-										</button>
-									</td>
-								</tr>
-							);
-						})}
+						{sortByProductName(requestedProducts).map(
+							(requestedProduct, index) => {
+								return (
+									<tr key={requestedProduct._id}>
+										<td>{index + 1}</td>
+										<td>
+											<ProductName product={product} />
+										</td>
+										<td>
+											<button
+												className="btn btn-error btn-sm"
+												onClick={() =>
+													removeProductFromRequested(requestedProduct)
+												}
+											>
+												Unrequest
+											</button>
+										</td>
+									</tr>
+								);
+							}
+						)}
 					</tbody>
 				</ProductTable>
 			)}
