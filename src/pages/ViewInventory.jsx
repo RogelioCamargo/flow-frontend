@@ -54,7 +54,7 @@ const ViewInventory = () => {
 			: products.filter((product) => category === product.category.name);
 
 	const productsFilteredBySearch = productsFilteredByCategory.filter(
-		(product) => product.name.includes(search)
+		(product) => product.name.toLowerCase().includes(search)
 	);
 
 	return (
