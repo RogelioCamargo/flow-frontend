@@ -13,22 +13,10 @@ function useProducts() {
 
 function useProduct(productId) {
 	const client = useClient();
-	const { data } = useQuery({
+	return useQuery({
 		queryKey: ["product", { productId }],
 		queryFn: () => client(`api/products/${productId}`),
 	});
-
-	return (
-		data ?? {
-			name: "",
-			quantity: "",
-			category: {
-				_id: "",
-				name: "",
-			},
-			status: "",
-		}
-	);
 }
 
 function useCreateProduct() {
@@ -47,8 +35,7 @@ function useMarkAllAsOrdered() {
 	const client = useClient();
 	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: () =>
-			client(`api/products/order-all`, { method: "POST" }),
+		mutationFn: () => client(`api/products/order-all`, { method: "POST" }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["products"] });
 		},
@@ -59,10 +46,13 @@ function useUpdateProduct() {
 	const client = useClient();
 	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: (updates) =>
-			client(`api/products/${updates._id}`, { method: "PUT", data: updates }),
+		mutationFn: (productUpdates) =>
+			client(`api/products/${productUpdates._id}`, {
+				method: "PUT",
+				data: productUpdates,
+			}),
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ["products"] });
+			queryClient.invalidateQueries();
 		},
 	});
 }

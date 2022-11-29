@@ -8,6 +8,7 @@ import {
 	ModalDismissButton,
 	ModalOpenButton,
 } from "../components/Modal";
+import Select from "../components/Select";
 import { useCategories } from "../utils/categories";
 import {
 	useProduct,
@@ -18,7 +19,13 @@ import {
 const Product = () => {
 	const { id } = useParams();
 	const navigate = useNavigate();
-	const product = useProduct(id);
+	const {
+		data: product,
+		isSuccess,
+		isError,
+		isLoading,
+		error,
+	} = useProduct(id);
 	const categories = useCategories();
 	const { mutate: removeProduct } = useRemoveProduct();
 	const { mutate: updateProduct } = useUpdateProduct();
@@ -35,13 +42,11 @@ const Product = () => {
 	const updateProductDetails = (event) => {
 		event.preventDefault();
 
-		const startOfNamedFields = event.target.elements.length;
-		const fields = Object.entries(event.target.elements).slice(
-			startOfNamedFields
-		);
+		const formData = new FormData(event.target);
+
 		const updates = { _id: product._id };
-		for (const [name, element] of fields) {
-			if (element.value) updates[name] = element.value;
+		for (const [name, value] of formData) {
+			updates[name] = value;
 		}
 
 		updateProduct(updates);
@@ -50,28 +55,41 @@ const Product = () => {
 			theme: "colored",
 		});
 	};
-	return (
-		<div className="prose w-5/6 md:w-4/6 lg:w-5/6 mx-auto">
-			<h2 className="text-center mt-10 mb-0">Edit Product</h2>
-			<form onSubmit={updateProductDetails}>
-				{/* Row 1 */}
-				<Input label="Name" defaultValue={product.name} name="name" />
-				{/* Row 2 */}
-				<div className="md:grid md:grid-cols-2 md:gap-1">
+
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
+
+	if (isError) {
+		return <div>{error.message}</div>;
+	}
+
+	if (isSuccess) {
+		return (
+			<div className="prose w-5/6 md:w-4/6 lg:w-5/6 mx-auto">
+				<h2 className="text-center mt-10 mb-0">Edit Product</h2>
+				<form onSubmit={updateProductDetails}>
+					{/* Row 1 */}
 					<Input
-						type="number"
-						label="Quantity"
+						label="Name"
 						defaultValue={product.name}
 						name="name"
+						required
 					/>
-					<div className="form-control w-full">
-						<label className="label">
-							<span className="label-text">Category</span>
-						</label>
-						<select
-							className="select select-bordered"
+					{/* Row 2 */}
+					<div className="md:grid md:grid-cols-2 md:gap-2">
+						<Input
+							type="number"
+							label="Quantity"
+							defaultValue={product.quantity}
+							name="quantity"
+							required
+						/>
+						<Select
+							label="Category"
 							name="category"
 							defaultValue={product.category._id}
+							required
 						>
 							<option disabled>Select One</option>
 							{categories.map((category) => (
@@ -79,72 +97,78 @@ const Product = () => {
 									{category.name}
 								</option>
 							))}
-						</select>
+						</Select>
 					</div>
-				</div>
-				{/* Row 3 */}
-				<Input
-					label="Purchase Link"
-					defaultValue={product?.purchaseLink ?? ""}
-					name="purchaseLink"
-				/>
-				{/* Row 4 */}
-				<div className="md:grid md:grid-cols-2 md:gap-1">
-					<Input
-						type="number"
-						label="Low Quantity"
-						defaultValue={product?.lowQuantity ?? ""}
-						name="lowQuantity"
-					/>
-					<Input
-						type="number"
-						label="Reorder Quantity"
-						defaultValue={product?.reorderQuantity ?? ""}
-						name="reorderQuantity"
-					/>
-				</div>
-				{/* Row 5 */}
-				<div className="md:grid md:grid-cols-2 md:gap-1">
-					<Input
-						type="number"
-						label="Units Per Container"
-						defaultValue={product?.unitsPerContainer ?? ""}
-						name="unitsPerContainer"
-					/>
-					<Input
-						label="Unit of Measure"
-						defaultValue={product?.unitOfMeasure ?? ""}
-						name="unitOfMeasure"
-					/>
-				</div>
-				<button type="submit" className="btn btn-primary w-48 mt-3">
-					Save Changes
-				</button>
-			</form>
+					{/* Row 3 */}
+					<div className="md:grid md:grid-cols-2 md:gap-2">
+						<Input
+							label="Purchase Link"
+							defaultValue={product?.purchaseLink ?? ""}
+							name="purchaseLink"
+						/>
+						<Select label="Status" name="status" defaultValue={product.status}>
+							<option disabled>Select One</option>
+							<option value="None">None</option>
+							<option value="Requested">Requested</option>
+							<option value="Ordered">Ordered</option>
+						</Select>
+					</div>
+					{/* Row 4 */}
+					<div className="md:grid md:grid-cols-2 md:gap-2">
+						<Input
+							type="number"
+							label="Low Quantity"
+							defaultValue={product?.lowQuantity ?? ""}
+							name="lowQuantity"
+						/>
+						<Input
+							type="number"
+							label="Reorder Quantity"
+							defaultValue={product?.reorderQuantity ?? ""}
+							name="reorderQuantity"
+						/>
+					</div>
+					{/* Row 5 */}
+					<div className="md:grid md:grid-cols-2 md:gap-2">
+						<Input
+							type="number"
+							label="Units Per Container"
+							defaultValue={product?.unitsPerContainer ?? ""}
+							name="unitsPerContainer"
+						/>
+						<Input
+							label="Unit of Measure"
+							defaultValue={product?.unitOfMeasure ?? ""}
+							name="unitOfMeasure"
+						/>
+					</div>
+					<button type="submit" className="btn btn-primary w-48 mt-5">
+						Save Changes
+					</button>
+				</form>
 
-			<p className="mt-12 mb-3">Would you like to delete this product?</p>
-			<Modal>
-				<ModalOpenButton>
-					<button className="btn btn-error w-48">Remove Product</button>
-				</ModalOpenButton>
-				<ModalContent title="Confirm">
-					<ModalDismissButton />
-					<p className="mt-0">
-						Are you sure you want to remove <br />{" "}
-						<span className="font-bold text-primary">{product.name}</span>?
-					</p>
-					<div className="card-actions">
+				<p className="mt-12 mb-3">Would you like to delete this product?</p>
+				<Modal>
+					<ModalOpenButton>
+						<button className="btn btn-error w-48">Remove Product</button>
+					</ModalOpenButton>
+					<ModalContent title="Confirm">
+						<ModalDismissButton />
+						<p className="mt-0">
+							Are you sure you want to remove <br />{" "}
+							<span className="font-bold text-primary">{product.name}</span>?
+						</p>
 						<button
 							className="btn btn-error btn-block"
 							onClick={removeProductPermanently}
 						>
 							Remove
 						</button>
-					</div>
-				</ModalContent>
-			</Modal>
-		</div>
-	);
+					</ModalContent>
+				</Modal>
+			</div>
+		);
+	}
 };
 
 export default Product;
