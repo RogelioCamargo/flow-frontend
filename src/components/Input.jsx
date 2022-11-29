@@ -4,7 +4,6 @@ const Input = ({
 	label = null,
 	sublabel = null,
 	type = "text",
-	className = "",
 	...props
 } = {}) => {
 	return (
