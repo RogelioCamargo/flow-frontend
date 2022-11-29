@@ -13,6 +13,7 @@ import {
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Input } from "../components/Input";
+import Select from "../components/Select";
 
 const initialNewProductDetails = {
 	name: "",
@@ -54,8 +55,7 @@ const ViewInventory = () => {
 		<div className="prose md:max-w-lg lg:max-w-4xl mx-auto">
 			<h2 className="text-center mt-10">View Inventory</h2>
 			<div className="px-1">
-				<select
-					className="select select-bordered w-full mb-0"
+				<Select
 					value={category}
 					onChange={({ target }) => setCategory(target.value)}
 				>
@@ -65,7 +65,7 @@ const ViewInventory = () => {
 							{category.name}
 						</option>
 					))}
-				</select>
+				</Select>
 			</div>
 			<Table>
 				<thead>
@@ -179,41 +179,35 @@ const ViewInventory = () => {
 								})
 							}
 						/>
-						<div className="form-control w-full max-w-xs">
-							<label className="label">
-								<span className="label-text">Category</span>
-							</label>
-							<select
-								className="select select-bordered"
-								value={newProduct.category}
-								onChange={(event) =>
-									setNewProduct({
-										...newProduct,
-										category: event.target.value,
-									})
-								}
-							>
-								<option disabled value="">
-									Select One
-								</option>
-								{categories.map((category) => (
-									<option key={category._id} value={category._id}>
-										{category.name}
-									</option>
-								))}
-							</select>
-						</div>
-					</form>
-					<div className="card-actions mt-3">
-						<button
-							className={`btn btn-primary btn-block ${
-								isConfirmDisabled ? "btn-disabled" : ""
-							}`}
-							onClick={createOnClick}
+						<Select
+							label="Category"
+							value={newProduct.category}
+							onChange={(event) =>
+								setNewProduct({
+									...newProduct,
+									category: event.target.value,
+								})
+							}
+							required
 						>
-							Create
-						</button>
-					</div>
+							<option disabled value="">
+								Select One
+							</option>
+							{categories.map((category) => (
+								<option key={category._id} value={category._id}>
+									{category.name}
+								</option>
+							))}
+						</Select>
+					</form>
+					<button
+						className={`btn btn-primary btn-block mt-3 ${
+							isConfirmDisabled ? "btn-disabled" : ""
+						}`}
+						onClick={createOnClick}
+					>
+						Create
+					</button>
 				</ModalContent>
 			</Modal>
 		</div>
