@@ -27,10 +27,12 @@ const CountInventory = () => {
 
 	const previousOnClick = () => {
 		setIndex((previousIndex) => previousIndex - 1);
+		setQuantity("")
 	};
 
 	const nextOnClick = () => {
 		setIndex((previousIndex) => previousIndex + 1);
+		setQuantity("")
 	};
 
 	const requestProduct = () => {
