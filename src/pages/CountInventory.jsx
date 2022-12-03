@@ -3,10 +3,11 @@ import EmptyList from "../components/EmptyList";
 import Input from "../components/Input";
 import { ProductName, ProductTable } from "../components/ProductTable";
 import { useProducts, useUpdateProduct } from "../utils/products";
-import { sortByProductName } from "../utils/sortter";
+import { sortByProductCategory, sortByProductName } from "../utils/sortter";
 
 const CountInventory = () => {
 	const products = useProducts();
+	const productsSortedByCategory = sortByProductCategory(products);
 	const { mutate } = useUpdateProduct();
 	const [quantity, setQuantity] = useState("");
 	const [index, setIndex] = useState(0);
@@ -16,7 +17,7 @@ const CountInventory = () => {
 	};
 
 	const isEndOfList = index === products.length;
-	const product = products[index];
+	const product = productsSortedByCategory[index];
 	const isPrevousDisabled = index <= 0;
 	const isNextDisabled = index >= products.length;
 	const isConfirmDisabled = quantity === "";

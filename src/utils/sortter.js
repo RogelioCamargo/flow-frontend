@@ -4,4 +4,8 @@ const sortByProductName = (products) => {
 	);
 };
 
-export { sortByProductName };
+const sortByProductCategory = (products) => {
+	return products.sort((a, b) => (a.category.name > b.category.name ? 1 : -1));
+};
+
+export { sortByProductName, sortByProductCategory };
