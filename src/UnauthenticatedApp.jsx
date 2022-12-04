@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth } from "./context/authContext";
-import { useAsync } from "./utils/hooks";
+import useAsync from "./hooks/useAsync";
 import {
 	Modal,
 	ModalContent,

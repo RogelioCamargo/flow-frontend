@@ -9,7 +9,7 @@ import {
 	ModalOpenButton,
 } from "../components/Modal";
 import { ProductName, ProductTable } from "../components/ProductTable";
-import { useProducts, useUpdateProduct } from "../utils/products";
+import { useProducts, useUpdateProduct } from "../hooks/products";
 import { sortByProductName } from "../utils/sortter";
 
 const ReceiveInventory = () => {

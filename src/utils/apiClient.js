@@ -1,4 +1,4 @@
-import * as auth from "../authProvider";
+import * as auth from "./authProvider";
 
 async function client(
 	endpoint,

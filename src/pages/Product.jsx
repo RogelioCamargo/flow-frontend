@@ -9,12 +9,12 @@ import {
 	ModalOpenButton,
 } from "../components/Modal";
 import Select from "../components/Select";
-import { useCategories } from "../utils/categories";
+import { useCategories } from "../hooks/categories";
 import {
 	useProduct,
 	useRemoveProduct,
 	useUpdateProduct,
-} from "../utils/products";
+} from "../hooks/products";
 
 const Product = () => {
 	const { id } = useParams();

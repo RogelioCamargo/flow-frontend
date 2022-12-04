@@ -6,7 +6,7 @@ import {
 	useProducts,
 	useUpdateProduct,
 	useMarkAllAsOrdered,
-} from "../utils/products";
+} from "../hooks/products";
 import { toast } from "react-toastify";
 import { sortByProductName } from "../utils/sortter";
 

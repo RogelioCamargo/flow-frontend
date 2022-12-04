@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { useCreateProduct } from "../utils/products";
-import { useCategories } from "../utils/categories";
-import { useProducts } from "../utils/products";
+import { useProducts, useCreateProduct } from "../hooks/products";
+import { useCategories } from "../hooks/categories";
 import { formatDate } from "../utils/formatter";
 import { ProductName, ProductTable } from "../components/ProductTable";
 import {
@@ -13,7 +12,7 @@ import {
 import { toast } from "react-toastify";
 import Input from "../components/Input";
 import Select from "../components/Select";
-import { LinkIcon } from "../components/icons";
+import { LinkIcon } from "../icons";
 import { sortByProductName } from "../utils/sortter";
 
 const initialNewProductDetails = {

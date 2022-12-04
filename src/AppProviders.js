@@ -1,6 +1,6 @@
 import * as React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
-import { AuthProvider } from "./authContext";
+import { AuthProvider } from "./context/authContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,4 +17,4 @@ function AppProviders({ children }) {
 	);
 }
 
-export { AppProviders };
+export default AppProviders;
