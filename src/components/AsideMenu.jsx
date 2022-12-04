@@ -1,12 +1,22 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../context/authContext";
-import { CountIcon, DashboardIcon, LogoIcon, LogoutIcon, ReceiveIcon, ViewIcon } from "../icons";
+import {
+	CountIcon,
+	DashboardIcon,
+	LogoIcon,
+	LogoutIcon,
+	ReceiveIcon,
+	ViewIcon,
+} from "../icons";
 
+// to: Link Route
+// alternative: Alternative Link Route
 const items = [
 	{
 		name: "Dashboard",
-		to: ["/", "/dashboard"],
+		to: "/dashboard",
+		alternative: "/",
 		Logo: DashboardIcon,
 	},
 	{
@@ -26,32 +36,30 @@ const items = [
 	},
 ];
 
-const AsideMenuItem = ({ name, to, Logo }) => {
+const AsideMenuItem = ({ name, to, Logo, alternative = null } = {}) => {
 	const location = useLocation();
 
-	let isCurrentMenuItem;
-	let linkTo;
-	if (Array.isArray(to)) {
-		isCurrentMenuItem = to.includes(location.pathname);
-		linkTo = to[1];
+	let isSelectedMenuItem;
+	if (alternative) {
+		isSelectedMenuItem = [to, alternative].includes(location.pathname);
 	} else {
-		isCurrentMenuItem = location.pathname === to;
-		linkTo = to;
+		isSelectedMenuItem = location.pathname === to;
 	}
 
 	return (
 		<li
-			className={`flex items-center ${isCurrentMenuItem ? "bg-secondary" : ""}`}
+			className={`flex items-center ${
+				isSelectedMenuItem ? "bg-secondary" : ""
+			}`}
 		>
-			<Link className="no-underline bg-transparent py-2" to={linkTo}>
+			<Link className="no-underline bg-transparent py-2" to={to}>
 				<div className="flex items-center w-28">
 					<Logo />
 					<span className="ml-3">
 						{name.split(" ").map((word) => (
-							<div key={word}>
+							<span className="block" key={word}>
 								{word}
-								<br />
-							</div>
+							</span>
 						))}
 					</span>
 				</div>
