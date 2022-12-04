@@ -13,7 +13,7 @@ import {
 import { toast } from "react-toastify";
 import Input from "../components/Input";
 import Select from "../components/Select";
-import { LinkIcon } from "../components/icons";
+import { LinkIcon } from "../icons";
 import { sortByProductName } from "../utils/sortter";
 
 const initialNewProductDetails = {
