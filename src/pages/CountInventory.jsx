@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import EmptyList from "../components/EmptyList";
 import Input from "../components/Input";
 import { ProductName, ProductTable } from "../components/ProductTable";
-import { useProducts, useUpdateProduct } from "../utils/products";
+import { useProducts, useUpdateProduct } from "../hooks/products";
 import { sortByProductCategory, sortByProductName } from "../utils/sortter";
 
 const CountInventory = () => {

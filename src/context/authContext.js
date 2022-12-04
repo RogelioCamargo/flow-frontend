@@ -1,8 +1,8 @@
 import * as React from "react";
 
-import * as auth from "../authProvider";
+import * as auth from "../utils/authProvider";
 import { client } from "../utils/apiClient";
-import { useAsync } from "../utils/hooks";
+import useAsync from "../hooks/useAsync";
 import { useQueryClient } from "@tanstack/react-query";
 
 async function getUser() {
