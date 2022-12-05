@@ -5,7 +5,18 @@ import { ProductName, ProductTable } from "../components/ProductTable";
 import { useProducts, useUpdateProduct } from "../hooks/products";
 import { sortByProductCategory, sortByProductName } from "../utils/sortter";
 
-const Counts = ({ products }) => {
+function CountInventory() {
+	const products = useProducts();
+
+	return (
+		<div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
+			<Counts products={products} />
+			<Requesting products={products} />
+		</div>
+	);
+}
+
+function Counts({ products }) {
 	const [quantity, setQuantity] = useState("");
 	const [index, setIndex] = useState(0);
 	const { mutate } = useUpdateProduct();
@@ -13,7 +24,7 @@ const Counts = ({ products }) => {
 	const productsSortedByCategory = sortByProductCategory(products);
 	const product = productsSortedByCategory[index];
 	const isEndOfList = index === products.length;
-	
+
 	const restartCounts = () => {
 		setIndex(0);
 	};
@@ -123,9 +134,9 @@ const Counts = ({ products }) => {
 			</div>
 		</>
 	);
-};
+}
 
-const Requesting = ({ products }) => {
+function Requesting({ products }) {
 	const { mutate } = useUpdateProduct();
 
 	const requestedProducts = products.filter(
@@ -181,17 +192,6 @@ const Requesting = ({ products }) => {
 			)}
 		</>
 	);
-};
-
-const CountInventory = () => {
-	const products = useProducts();
-
-	return (
-		<div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
-			<Counts products={products} />
-			<Requesting products={products} />
-		</div>
-	);
-};
+}
 
 export default CountInventory;
