@@ -13,17 +13,15 @@ const Modal = (props) => {
 	return <ModalContext.Provider value={[isOpen, setIsOpen]} {...props} />;
 };
 
-const ModalDismissButton = ({ onClick: secondaryOnClick }) => {
+const ModalDismissButton = ({ onClick }) => {
 	const [, setIsOpen] = useContext(ModalContext);
 
 	const closeModal = () => setIsOpen(false);
-	const onClick = secondaryOnClick
-		? callAll(closeModal, secondaryOnClick)
-		: closeModal;
+	const handleClick = onClick ? callAll(onClick, closeModal) : closeModal;
 
 	return (
 		<div className="absolute right-7">
-			<button onClick={onClick}>
+			<button onClick={handleClick}>
 				<CloseIcon />
 			</button>
 		</div>
@@ -36,6 +34,22 @@ const ModalOpenButton = ({ children: child }) => {
 	return React.cloneElement(child, {
 		onClick: callAll(() => setIsOpen(true), child.props.onClick),
 	});
+};
+
+const ModalConfirmButton = ({ className, children, onClick }) => {
+	const [, setIsOpen] = useContext(ModalContext);
+
+	const closeModal = () => setIsOpen(false);
+	const handleClick = onClick ? callAll(onClick, closeModal) : closeModal;
+
+	return (
+		<button
+			className={`btn btn-primary btn-block mt-3 ${className}`}
+			onClick={handleClick}
+		>
+			{children}
+		</button>
+	);
 };
 
 const ModalContentsBase = ({ children, props }) => {
@@ -67,4 +81,10 @@ const ModalContent = ({ title, children, ...props }) => {
 	);
 };
 
-export { Modal, ModalContent, ModalDismissButton, ModalOpenButton };
+export {
+	Modal,
+	ModalConfirmButton,
+	ModalContent,
+	ModalDismissButton,
+	ModalOpenButton,
+};
