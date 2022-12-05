@@ -5,6 +5,7 @@ import { formatDate } from "../utils/formatter";
 import { ProductName, ProductTable } from "../components/ProductTable";
 import {
 	Modal,
+	ModalConfirmButton,
 	ModalContent,
 	ModalDismissButton,
 	ModalOpenButton,
@@ -15,37 +16,11 @@ import Select from "../components/Select";
 import { LinkIcon } from "../icons";
 import { sortByProductName } from "../utils/sortter";
 
-const initialNewProductDetails = {
-	name: "",
-	quantity: "",
-	category: "",
-};
-
-const ViewInventory = () => {
+function ViewInventory() {
 	const products = useProducts();
-	const { mutate } = useCreateProduct();
 	const categories = useCategories();
-	const [newProduct, setNewProduct] = useState(initialNewProductDetails);
 	const [category, setCategory] = useState("All");
 	const [search, setSearch] = useState("");
-
-	const resetNewProduct = () => setNewProduct(initialNewProductDetails);
-
-	const createOnClick = () => {
-		mutate({
-			...newProduct,
-			quantity: Number(newProduct.quantity),
-		});
-		resetNewProduct();
-		toast.success("New Product Created", {
-			position: "bottom-center",
-			theme: "colored",
-		});
-	};
-
-	const isConfirmDisabled = Object.values(newProduct).some(
-		(input) => input === ""
-	);
 
 	const productsFilteredByCategory =
 		category === "All"
@@ -141,69 +116,99 @@ const ViewInventory = () => {
 				</tbody>
 			</ProductTable>
 
-			<Modal>
-				<ModalOpenButton>
-					<button className="btn btn-primary fixed bottom-5 right-5 text-3xl flex justify-center items-center text-white rounded-full w-12 h-12">
-						+
-					</button>
-				</ModalOpenButton>
-				<ModalContent title="New Product Details">
-					<ModalDismissButton onClick={resetNewProduct} />
-					<form>
-						<Input
-							label="Name"
-							value={newProduct.name}
-							onChange={(event) =>
-								setNewProduct({
-									...newProduct,
-									name: event.target.value,
-								})
-							}
-						/>
-						<Input
-							type="number"
-							label="Quantity"
-							value={newProduct.quantity}
-							onChange={(event) =>
-								setNewProduct({
-									...newProduct,
-									quantity: event.target.value,
-								})
-							}
-						/>
-						<Select
-							label="Category"
-							value={newProduct.category}
-							onChange={(event) =>
-								setNewProduct({
-									...newProduct,
-									category: event.target.value,
-								})
-							}
-							required
-						>
-							<option disabled value="">
-								Select One
-							</option>
-							{categories.map((category) => (
-								<option key={category._id} value={category._id}>
-									{category.name}
-								</option>
-							))}
-						</Select>
-					</form>
-					<button
-						className={`btn btn-primary btn-block mt-3 ${
-							isConfirmDisabled ? "btn-disabled" : ""
-						}`}
-						onClick={createOnClick}
-					>
-						Create
-					</button>
-				</ModalContent>
-			</Modal>
+			<CreateProductModal categories={categories} />
 		</div>
 	);
+}
+
+const initialNewProductDetails = {
+	name: "",
+	quantity: "",
+	category: "",
 };
+
+function CreateProductModal({ categories }) {
+	const [newProduct, setNewProduct] = useState(initialNewProductDetails);
+	const { mutate: createProduct } = useCreateProduct();
+	const isConfirmDisabled = Object.values(newProduct).some(
+		(input) => input === ""
+	);
+
+	const resetNewProduct = () => setNewProduct(initialNewProductDetails);
+
+	const createNewProduct = () => {
+		createProduct({
+			...newProduct,
+			quantity: Number(newProduct.quantity),
+		});
+		resetNewProduct();
+		toast.success("New Product Created", {
+			position: "bottom-center",
+			theme: "colored",
+		});
+	};
+
+	return (
+		<Modal>
+			<ModalOpenButton>
+				<button className="btn btn-primary fixed bottom-5 right-5 text-3xl flex justify-center items-center text-white rounded-full w-12 h-12">
+					+
+				</button>
+			</ModalOpenButton>
+			<ModalContent title="New Product Details">
+				<ModalDismissButton onClick={resetNewProduct} />
+				<form>
+					<Input
+						label="Name"
+						value={newProduct.name}
+						onChange={(event) =>
+							setNewProduct({
+								...newProduct,
+								name: event.target.value,
+							})
+						}
+					/>
+					<Input
+						type="number"
+						label="Quantity"
+						value={newProduct.quantity}
+						onChange={(event) =>
+							setNewProduct({
+								...newProduct,
+								quantity: event.target.value,
+							})
+						}
+					/>
+					<Select
+						label="Category"
+						value={newProduct.category}
+						onChange={(event) =>
+							setNewProduct({
+								...newProduct,
+								category: event.target.value,
+							})
+						}
+						required
+					>
+						<option disabled value="">
+							Select One
+						</option>
+						{categories.map((category) => (
+							<option key={category._id} value={category._id}>
+								{category.name}
+							</option>
+						))}
+					</Select>
+				</form>
+				<ModalConfirmButton
+					className={isConfirmDisabled ? "btn-disabled" : ""}
+					onClick={createNewProduct}
+				>
+					Create
+				</ModalConfirmButton>
+			</ModalContent>
+		</Modal>
+	);
+}
 
 export default ViewInventory;

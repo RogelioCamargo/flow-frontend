@@ -16,7 +16,7 @@ import {
 	useUpdateProduct,
 } from "../hooks/products";
 
-const Product = () => {
+function Product() {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const {
@@ -169,6 +169,6 @@ const Product = () => {
 			</div>
 		);
 	}
-};
+}
 
 export default Product;
