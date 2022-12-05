@@ -10,17 +10,27 @@ import {
 import { toast } from "react-toastify";
 import { sortByProductName } from "../utils/sortter";
 
-const Dashboard = () => {
+function Dashboard() {
 	const products = useProducts();
+
+	return (
+		<div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
+			<RequestedList products={products} />
+			<OrderedList products={products} />
+		</div>
+	);
+}
+
+function RequestedList({ products }) {
 	const { mutate: updateProduct } = useUpdateProduct();
 	const { mutate: markAllAsOrdered } = useMarkAllAsOrdered();
 
 	const requestedProducts = products.filter(
 		(product) => product.status === "Requested"
 	);
-	const orderedProducts = products.filter(
-		(product) => product.status === "Ordered"
-	);
+
+	const disableButtonIfEmpty =
+		requestedProducts.length === 0 ? "btn-disabled" : "";
 
 	const markProductAsOrdered = (product) => {
 		const updates = {
@@ -94,11 +104,8 @@ const Dashboard = () => {
 		});
 	};
 
-	const disableButtonIfEmpty =
-		requestedProducts.length === 0 ? "btn-disabled" : "";
-
 	return (
-		<div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
+		<>
 			<h2 className="text-center mt-10">Requested Products</h2>
 			<div className="text-center">
 				<button
@@ -152,7 +159,17 @@ const Dashboard = () => {
 					</tbody>
 				</ProductTable>
 			)}
+		</>
+	);
+}
 
+function OrderedList({ products }) {
+	const orderedProducts = products.filter(
+		(product) => product.status === "Ordered"
+	);
+
+	return (
+		<>
 			<h2 className="text-center mb-0">Ordered Products</h2>
 			{orderedProducts.length === 0 ? (
 				<EmptyList message="No ordered products to show." />
@@ -183,8 +200,8 @@ const Dashboard = () => {
 					</tbody>
 				</ProductTable>
 			)}
-		</div>
+		</>
 	);
-};
+}
 
 export default Dashboard;
