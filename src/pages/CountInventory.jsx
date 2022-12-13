@@ -61,7 +61,7 @@ function Counts({ products }) {
 
 	return (
 		<>
-			<h2 className="text-center mt-10">Inventory Counts</h2>
+			<h2 className="text-center mt-10">Count Inventory</h2>
 			<div className="flex flex-col items-center">
 				{isEndOfList ? (
 					<div className="card w-96 bg-neutral text-neutral-content h-80">
