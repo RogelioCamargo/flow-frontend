@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import EmptyList from "../components/EmptyList";
 import { ProductName, ProductTable } from "../components/ProductTable";
 import { formatDate } from "../utils/formatter";
@@ -6,18 +6,67 @@ import {
 	useProducts,
 	useUpdateProduct,
 	useMarkAllAsOrdered,
+	useDecrementSupplyCounts,
 } from "../hooks/products";
 import { toast } from "react-toastify";
 import { sortByProductName } from "../utils/sortter";
+import Input from "../components/Input";
 
 function Dashboard() {
 	const products = useProducts();
 
 	return (
 		<div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
+			<DailyOrderCount />
 			<RequestedList products={products} />
 			<OrderedList products={products} />
 		</div>
+	);
+}
+
+function DailyOrderCount() {
+	const [quantity, setQuantity] = useState("");
+	const { mutate: decrementSupplyCounts } = useDecrementSupplyCounts();
+
+	const confirmQuantity = () => {
+		decrementSupplyCounts({ orders: quantity });
+
+		toast.success("Operation Supply Quantities Updated", {
+			position: "bottom-center",
+			theme: "colored",
+		});
+
+		setQuantity("");
+	};
+
+	return (
+		<>
+			<h2 className="text-center mt-10">Dashboard</h2>
+			<div className="flex flex-col items-center">
+				<div className="card bg-gray-800 w-96 h-72">
+					<div className="card-body">
+						<h3 className="card-title h-12">
+							How many jewelry orders were completed today?
+						</h3>
+						<Input
+							type="number"
+							value={quantity}
+							onChange={({ target }) => setQuantity(target.value)}
+						/>
+						<div className="card-actions justify-end">
+							<button
+								className={`btn btn-primary mt-3 ${
+									quantity === "" ? "btn-disabled" : ""
+								}`}
+								onClick={confirmQuantity}
+							>
+								Confirm
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</>
 	);
 }
 
@@ -60,7 +109,7 @@ function RequestedList({ products }) {
 				type: "section",
 				text: {
 					type: "mrkdwn",
-					text: `\n\n\n*New Request - ${formatDate(new Date())}*`,
+					text: `*New Request - ${formatDate(new Date())}*`,
 				},
 			},
 			{
@@ -85,13 +134,16 @@ function RequestedList({ products }) {
 			blocks.push(newBlock, { type: "divider" });
 		});
 
-		blocks.push({
-			type: "section",
-			text: {
-				type: "mrkdwn",
-				text: `<https://flow-switch.netlify.app/|Open App>\n\n`,
+		blocks.push(
+			{
+				type: "section",
+				text: {
+					type: "mrkdwn",
+					text: `<https://flow-switch.netlify.app/|Open App>`,
+				},
 			},
-		});
+			{ type: "divider" }
+		);
 
 		fetch(process.env.REACT_APP_SLACK_WEBHOOK_API, {
 			method: "POST",
