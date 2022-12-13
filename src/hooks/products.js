@@ -35,7 +35,19 @@ function useMarkAllAsOrdered() {
 	const client = useClient();
 	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: () => client(`api/products/order-all`, { method: "POST" }),
+		mutationFn: () => client("api/products/order-all", { method: "POST" }),
+		onSuccess: () => {
+			queryClient.invalidateQueries({ queryKey: ["products"] });
+		},
+	});
+}
+
+function useDecrementSupplyCounts() {
+	const client = useClient();
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: (data) =>
+			client("api/products/decrement-supply-counts", { data }),
 		onSuccess: () => {
 			queryClient.invalidateQueries({ queryKey: ["products"] });
 		},
@@ -74,6 +86,7 @@ export {
 	useProduct,
 	useUpdateProduct,
 	useMarkAllAsOrdered,
+	useDecrementSupplyCounts,
 	useCreateProduct,
 	useRemoveProduct,
 };

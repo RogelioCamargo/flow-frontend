@@ -5,44 +5,28 @@ import { ProductName, ProductTable } from "../components/ProductTable";
 import { useProducts, useUpdateProduct } from "../hooks/products";
 import { sortByProductCategory, sortByProductName } from "../utils/sortter";
 
-const CountInventory = () => {
+function CountInventory() {
 	const products = useProducts();
-	const productsSortedByCategory = sortByProductCategory(products);
-	const { mutate } = useUpdateProduct();
+
+	return (
+		<div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
+			<Counts products={products} />
+			<Requesting products={products} />
+		</div>
+	);
+}
+
+function Counts({ products }) {
 	const [quantity, setQuantity] = useState("");
 	const [index, setIndex] = useState(0);
+	const { mutate } = useUpdateProduct();
+
+	const productsSortedByCategory = sortByProductCategory(products);
+	const product = productsSortedByCategory[index];
+	const isEndOfList = index === products.length;
 
 	const restartCounts = () => {
 		setIndex(0);
-	};
-
-	const isEndOfList = index === products.length;
-	const product = productsSortedByCategory[index];
-	const isPrevousDisabled = index <= 0;
-	const isNextDisabled = index >= products.length;
-	const isConfirmDisabled = quantity === "";
-	const requestedProducts = products.filter(
-		(product) => product.status === "Requested"
-	);
-
-	const previousOnClick = () => {
-		setIndex((previousIndex) => previousIndex - 1);
-		setQuantity("")
-	};
-
-	const nextOnClick = () => {
-		setIndex((previousIndex) => previousIndex + 1);
-		setQuantity("")
-	};
-
-	const requestProduct = () => {
-		const updates = {
-			...product,
-			status: "Requested",
-			lastRequestedDate: new Date(),
-		};
-
-		mutate(updates);
 	};
 
 	const confirmQuantity = () => {
@@ -55,19 +39,29 @@ const CountInventory = () => {
 		setQuantity("");
 	};
 
-	const removeProductFromRequested = (productToRemove) => {
+	const requestProduct = () => {
 		const updates = {
-			...productToRemove,
-			status: "None",
+			...product,
+			status: "Requested",
+			lastRequestedDate: new Date(),
 		};
 
 		mutate(updates);
 	};
 
-	return (
-		<div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
-			<h2 className="text-center mt-10">Inventory Counts</h2>
+	const previous = () => {
+		setIndex((previousIndex) => previousIndex - 1);
+		setQuantity("");
+	};
 
+	const next = () => {
+		setIndex((previousIndex) => previousIndex + 1);
+		setQuantity("");
+	};
+
+	return (
+		<>
+			<h2 className="text-center mt-10">Count Inventory</h2>
 			<div className="flex flex-col items-center">
 				{isEndOfList ? (
 					<div className="card w-96 bg-neutral text-neutral-content h-80">
@@ -106,7 +100,7 @@ const CountInventory = () => {
 								</button>
 								<button
 									className={`btn btn-success ${
-										isConfirmDisabled ? "btn-disabled" : ""
+										quantity === "" ? "btn-disabled" : ""
 									}`}
 									onClick={confirmQuantity}
 								>
@@ -120,10 +114,8 @@ const CountInventory = () => {
 			<div className="flex justify-center">
 				<div className="btn-group grid grid-cols-3 w-96 mt-3">
 					<button
-						className={`btn btn-outline ${
-							isPrevousDisabled ? "btn-disabled" : ""
-						}`}
-						onClick={previousOnClick}
+						className={`btn btn-outline ${index <= 0 ? "btn-disabled" : ""}`}
+						onClick={previous}
 					>
 						«
 					</button>
@@ -132,15 +124,36 @@ const CountInventory = () => {
 					</button>
 					<button
 						className={`btn btn-outline ${
-							isNextDisabled ? "btn-disabled" : ""
+							index >= products.length ? "btn-disabled" : ""
 						}`}
-						onClick={nextOnClick}
+						onClick={next}
 					>
 						»
 					</button>
 				</div>
 			</div>
+		</>
+	);
+}
 
+function Requesting({ products }) {
+	const { mutate } = useUpdateProduct();
+
+	const requestedProducts = products.filter(
+		(product) => product.status === "Requested"
+	);
+
+	const unrequestProduct = (productToRemove) => {
+		const updates = {
+			...productToRemove,
+			status: "None",
+		};
+
+		mutate(updates);
+	};
+
+	return (
+		<>
 			<h2 className="text-center mb-0">Requesting</h2>
 			{requestedProducts.length === 0 ? (
 				<EmptyList message="Products you request will be displayed here." />
@@ -165,9 +178,7 @@ const CountInventory = () => {
 										<td>
 											<button
 												className="btn btn-error btn-sm"
-												onClick={() =>
-													removeProductFromRequested(requestedProduct)
-												}
+												onClick={() => unrequestProduct(requestedProduct)}
 											>
 												Unrequest
 											</button>
@@ -179,8 +190,8 @@ const CountInventory = () => {
 					</tbody>
 				</ProductTable>
 			)}
-		</div>
+		</>
 	);
-};
+}
 
 export default CountInventory;
