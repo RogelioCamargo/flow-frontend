@@ -7,6 +7,7 @@ import {
 	LogoIcon,
 	LogoutIcon,
 	ReceiveIcon,
+	TicketIcon,
 	ViewIcon,
 } from "../icons";
 
@@ -33,6 +34,11 @@ const items = [
 		name: "Receive Inventory",
 		to: "/receive-inventory",
 		Logo: ReceiveIcon,
+	},
+	{
+		name: "Tickets",
+		to: "/tickets",
+		Logo: TicketIcon,
 	},
 ];
 
