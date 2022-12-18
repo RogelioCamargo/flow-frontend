@@ -1,16 +1,17 @@
 const formatDate = (date) => {
 	if (date == null) return null;
 
-	let safeDate = date;
-	if (typeof date === "string") {
-		safeDate = new Date(date);
-	}
+	let safeDate = new Date(date);
 
-	return safeDate.toLocaleDateString("en-US", {
-		year: "numeric",
-		month: "2-digit",
-		day: "2-digit",
-	});
+	return safeDate.toLocaleDateString();
 };
 
-export { formatDate };
+const formatDateWithTime = (date) => {
+	if (date == null) return null;
+
+	let safeDate = new Date(date);
+
+	return safeDate.toLocaleString();
+};
+
+export { formatDate, formatDateWithTime };

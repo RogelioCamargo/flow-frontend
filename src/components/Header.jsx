@@ -20,6 +20,10 @@ const items = [
 		to: "/receive-inventory",
 		name: "Receive Inventory",
 	},
+	{
+		to: "/tickets",
+		name: "Tickets",
+	},
 ];
 
 const DropdownMenuItem = ({ to, name }) => {
