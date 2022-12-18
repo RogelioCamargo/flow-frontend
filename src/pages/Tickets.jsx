@@ -10,6 +10,7 @@ import {
 } from "../components/Modal";
 import Input from "../components/Input";
 import { formatDateWithTime } from "../utils/formatter";
+import { Link } from "react-router-dom";
 
 function Tickets() {
 	const [search, setSearch] = useState("");
@@ -24,17 +25,19 @@ function Tickets() {
 	return (
 		<div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
 			<h2 className="text-center mt-10">Tickets</h2>
-			<Input
-				placeholder="Search"
-				value={search}
-				onChange={(event) => setSearch(event.target.value)}
-			/>
+			<div className="px-1">
+				<Input
+					placeholder="Search Tracking Number"
+					value={search}
+					onChange={(event) => setSearch(event.target.value)}
+				/>
+			</div>
 			<div className="overflow-x-auto">
 				<table className="table w-full">
 					<thead>
 						<tr>
-							<th>Timestamp</th>
 							<th>Tracking Number</th>
+							<td>Timestamp</td>
 							<th>Notes</th>
 						</tr>
 					</thead>
@@ -45,8 +48,15 @@ function Tickets() {
 								const timestamp = formatDateWithTime(ticket.createdAt);
 								return (
 									<tr key={ticket._id}>
+										<th>
+											<Link
+												to={`/tickets/${ticket._id}`}
+												className="no-underline"
+											>
+												{ticket.trackingNumber}
+											</Link>
+										</th>
 										<td>{timestamp}</td>
-										<td>{ticket.trackingNumber}</td>
 										<td className="max-w-xs truncate">
 											{ticket.notes === "" ? "--" : ticket.notes}
 										</td>
