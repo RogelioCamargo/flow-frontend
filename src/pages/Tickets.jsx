@@ -110,6 +110,7 @@ function CreateTicketModal() {
 						</label>
 						<textarea
 							className="textarea textarea-bordered h-24"
+							value={newTicket.notes}
 							onChange={(event) =>
 								setNewTicket({
 									...newTicket,
