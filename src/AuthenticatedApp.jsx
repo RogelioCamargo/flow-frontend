@@ -8,6 +8,7 @@ import AsideMenu from "./components/AsideMenu";
 import Product from "./pages/Product";
 import { ErrorBoundary } from "react-error-boundary";
 import Tickets from "./pages/Tickets";
+import Ticket from "./pages/Ticket";
 
 function FullPageErrorFallback({ error }) {
 	return (
@@ -50,6 +51,7 @@ function AppRoutes() {
 				<Route path="/receive-inventory" element={<ReceiveInventory />} />
 				<Route path="/product/:id" element={<Product />} />
 				<Route path="/tickets" element={<Tickets />} />
+				<Route path="/tickets/:ticketId" element={<Ticket />} />
 			</Routes>
 		</div>
 	);
