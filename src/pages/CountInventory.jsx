@@ -7,10 +7,11 @@ import { sortByProductCategory, sortByProductName } from "../utils/sortter";
 
 function CountInventory() {
 	const products = useProducts();
+	const productsSortedByCategory = sortByProductCategory(products);
 
 	return (
 		<div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
-			<Counts products={products} />
+			<Counts products={productsSortedByCategory} />
 			<Requesting products={products} />
 		</div>
 	);
@@ -21,8 +22,7 @@ function Counts({ products }) {
 	const [index, setIndex] = useState(0);
 	const { mutate } = useUpdateProduct();
 
-	const productsSortedByCategory = sortByProductCategory(products);
-	const product = productsSortedByCategory[index];
+	const product = products[index];
 	const isEndOfList = index === products.length;
 
 	const restartCounts = () => {
