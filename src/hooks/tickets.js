@@ -31,7 +31,7 @@ function useCreateTicket() {
 	});
 }
 
-function useUpdateProduct() {
+function useUpdateTicket() {
 	const client = useClient();
 	const queryClient = useQueryClient();
 	return useMutation({
@@ -61,7 +61,7 @@ function useRemoveTicket() {
 export {
 	useTickets,
 	useTicket,
-	useUpdateProduct,
+	useUpdateTicket,
 	useCreateTicket,
 	useRemoveTicket,
 };
