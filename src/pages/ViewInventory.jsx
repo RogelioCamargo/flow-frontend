@@ -30,111 +30,118 @@ function ViewInventory({ filters, setFilters }) {
 	);
 
 	return (
-		<div className="prose md:max-w-lg lg:max-w-4xl mx-auto">
-			<h2 className="text-center mt-10">View Inventory</h2>
-			<div className="px-1 md:grid md:grid-cols-6 md:gap-2">
-				<div className="mb-3 md:mb-0 md:col-span-3">
-					<Input
-						placeholder="Search"
-						value={search}
-						onChange={(e) =>
-							setFilters((previousFilters) => ({
-								...previousFilters,
-								search: e.target.value.toLowerCase(),
-							}))
-						}
-					/>
-				</div>
-				<div className="mb-3 md:mb-0 md:col-span-2">
-					<Select
-						value={category}
-						onChange={({ target }) =>
-							setFilters((previousFilters) => ({
-								...previousFilters,
-								category: target.value,
-							}))
-						}
+		<>
+			<div className="prose md:max-w-lg lg:max-w-4xl mx-auto">
+				<h2 className="text-center mt-10">View Inventory</h2>
+				<div className="px-1 md:grid md:grid-cols-6 md:gap-2">
+					<div className="mb-3 md:mb-0 md:col-span-3">
+						<Input
+							placeholder="Search"
+							value={search}
+							onChange={(e) =>
+								setFilters((previousFilters) => ({
+									...previousFilters,
+									search: e.target.value.toLowerCase(),
+								}))
+							}
+						/>
+					</div>
+					<div className="mb-3 md:mb-0 md:col-span-2">
+						<Select
+							value={category}
+							onChange={({ target }) =>
+								setFilters((previousFilters) => ({
+									...previousFilters,
+									category: target.value,
+								}))
+							}
+						>
+							<option value="All">All</option>
+							{categories.map((category) => (
+								<option key={category._id} value={category.name}>
+									{category.name}
+								</option>
+							))}
+						</Select>
+					</div>
+					<button
+						className="btn btn-primary btn-block"
+						onClick={() => setFilters({ category: "All", search: "" })}
 					>
-						<option value="All">All</option>
-						{categories.map((category) => (
-							<option key={category._id} value={category.name}>
-								{category.name}
-							</option>
-						))}
-					</Select>
+						Reset
+					</button>
 				</div>
-				<button
-					className="btn btn-primary btn-block"
-					onClick={() => setFilters({ category: "All", search: "" })}
-				>
-					Reset
-				</button>
-			</div>
-			<ProductTable>
-				<thead>
-					<tr>
-						<td></td>
-						<th>Name</th>
-						<th>Quantity</th>
-						<th>Status</th>
-						<th>Last Ordered</th>
-						<th>Last Received</th>
-						<th>Link</th>
-					</tr>
-				</thead>
-				<tbody>
-					{sortByProductName(productsFilteredBySearch).map((product, index) => {
-						const lastOrderedDate =
-							formatDate(product?.lastOrderedDate) ?? "--";
+				<ProductTable>
+					<thead>
+						<tr>
+							<td></td>
+							<th>Name</th>
+							<th>Quantity</th>
+							<th>Status</th>
+							<th>Last Ordered</th>
+							<th>Last Received</th>
+							<th>Link</th>
+						</tr>
+					</thead>
+					<tbody>
+						{sortByProductName(productsFilteredBySearch).map(
+							(product, index) => {
+								const lastOrderedDate =
+									formatDate(product?.lastOrderedDate) ?? "--";
 
-						const lastReceivedDate =
-							formatDate(product?.lastReceivedDate) ?? "--";
+								const lastReceivedDate =
+									formatDate(product?.lastReceivedDate) ?? "--";
 
-						return (
-							<tr key={product._id}>
-								<td>{index + 1}</td>
-								<td>
-									<ProductName product={product} />
-								</td>
-								<td>
-									<div>{`${product.quantity} ${product?.unitOfMeasure ?? ""}${
-										product.quantity > 1 && product?.unitOfMeasure ? "s" : ""
-									}`}</div>
-									{product?.unitsPerContainer ? (
-										<div className="text-sm opacity-50">
-											{`${product.unitsPerContainer} / 
+								return (
+									<tr key={product._id}>
+										<td>{index + 1}</td>
+										<td>
+											<ProductName product={product} />
+										</td>
+										<td>
+											<div>{`${product.quantity} ${
+												product?.unitOfMeasure ?? ""
+											}${
+												product.quantity > 1 && product?.unitOfMeasure
+													? "s"
+													: ""
+											}`}</div>
+											{product?.unitsPerContainer ? (
+												<div className="text-sm opacity-50">
+													{`${product.unitsPerContainer} / 
 												${product?.unitOfMeasure ?? "Container"}`}
-										</div>
-									) : null}
-									{product.quantity < product?.lowQuantity ? (
-										<div className="badge badge-error badge-xs">Low</div>
-									) : null}
-								</td>
-								<td>{product.status === "None" ? "--" : product.status}</td>
-								<td>{lastOrderedDate}</td>
-								<td>{lastReceivedDate}</td>
-								<td>
-									{product?.purchaseLink ? (
-										<a
-											className="no-underline"
-											target="_blank"
-											rel="noreferrer"
-											href={`${product.purchaseLink}`}
-										>
-											<LinkIcon />
-										</a>
-									) : (
-										"--"
-									)}
-								</td>
-							</tr>
-						);
-					})}
-				</tbody>
-			</ProductTable>
-
+												</div>
+											) : null}
+											{product.quantity < product?.lowQuantity ? (
+												<div className="badge badge-error badge-xs">Low</div>
+											) : null}
+										</td>
+										<td>{product.status === "None" ? "--" : product.status}</td>
+										<td>{lastOrderedDate}</td>
+										<td>{lastReceivedDate}</td>
+										<td>
+											{product?.purchaseLink ? (
+												<a
+													className="no-underline"
+													target="_blank"
+													rel="noreferrer"
+													href={`${product.purchaseLink}`}
+												>
+													<LinkIcon />
+												</a>
+											) : (
+												"--"
+											)}
+										</td>
+									</tr>
+								);
+							}
+						)}
+					</tbody>
+				</ProductTable>
+			</div>
 			<CreateProductModal categories={categories} />
-		</div>
+		</>
 	);
 }
 
