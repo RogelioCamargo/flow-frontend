@@ -9,7 +9,7 @@ function Spinner({ size, color = "primary" } = {}) {
 	);
 }
 
-function FullPageSpinner({ size = 16 } = {}) {
+function FullPageSpinner({ size }) {
 	return (
 		<div className="absolute top-0 right-0 z-50 h-screen w-screen flex justify-center items-center">
 			<Spinner size={size} />
