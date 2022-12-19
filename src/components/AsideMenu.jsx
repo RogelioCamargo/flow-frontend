@@ -82,7 +82,7 @@ const AsideMenu = () => {
 			<ul className="menu h-screen text-white font-bold p-0 relative">
 				{/* Logo Button */}
 				<li className="flex items-center">
-					<Link to="/">
+					<Link to="/" className="bg-transparent">
 						<div className="flex items-center text-primary">
 							<LogoIcon />
 							<span className="ml-1 text-xl">flow</span>
