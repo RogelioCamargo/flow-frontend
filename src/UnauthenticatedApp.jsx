@@ -8,6 +8,7 @@ import {
 	ModalOpenButton,
 } from "./components/Modal";
 import Logo from "./logo.png";
+import { Spinner } from "./components/Spinner";
 
 function LoginForm({ onSubmit, submitButton }) {
 	const { isLoading, isError, error, run } = useAsync();
@@ -53,7 +54,11 @@ function LoginForm({ onSubmit, submitButton }) {
 					...(Array.isArray(submitButton.props.children)
 						? submitButton.props.children
 						: [submitButton.props.children]),
-					isLoading ? <div>Loading...</div> : null
+					isLoading ? (
+						<div className="ml-1">
+							<Spinner size={5} color="black" />
+						</div>
+					) : null
 				)}
 			</div>
 			{isError ? <div>{error.message}</div> : null}

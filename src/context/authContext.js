@@ -4,6 +4,7 @@ import * as auth from "../utils/authProvider";
 import { client } from "../utils/apiClient";
 import useAsync from "../hooks/useAsync";
 import { useQueryClient } from "@tanstack/react-query";
+import { FullPageSpinner } from "../components/Spinner";
 
 async function getUser() {
 	let user = null;
@@ -59,7 +60,7 @@ function AuthProvider(props) {
 	);
 
 	if (isLoading || isIdle) {
-		return <div>Loading...</div>;
+		return <FullPageSpinner />;
 	}
 
 	if (isError) {

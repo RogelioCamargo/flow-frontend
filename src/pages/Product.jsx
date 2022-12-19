@@ -15,6 +15,7 @@ import {
 	useRemoveProduct,
 	useUpdateProduct,
 } from "../hooks/products";
+import { FullPageSpinner } from "../components/Spinner";
 
 function Product() {
 	const { id } = useParams();
@@ -57,7 +58,7 @@ function Product() {
 	};
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <FullPageSpinner />;
 	}
 
 	if (isError) {
