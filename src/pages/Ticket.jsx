@@ -9,6 +9,7 @@ import {
 	ModalOpenButton,
 } from "../components/Modal";
 import { toast } from "react-toastify";
+import {FullPageSpinner} from "../components/Spinner";
 
 function Ticket() {
 	const { ticketId } = useParams();
@@ -50,7 +51,7 @@ function Ticket() {
 	};
 
 	if (isLoading) {
-		return <div>Loading...</div>;
+		return <FullPageSpinner />;
 	}
 
 	if (isError) {

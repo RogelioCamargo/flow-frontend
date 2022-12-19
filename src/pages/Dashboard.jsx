@@ -5,7 +5,7 @@ import { formatDate } from "../utils/formatter";
 import {
 	useProducts,
 	useUpdateProduct,
-	useMarkAllAsOrdered,
+	useOrderAllProducts,
 	useDecrementSupplyCounts,
 } from "../hooks/products";
 import { toast } from "react-toastify";
@@ -72,7 +72,7 @@ function DailyOrderCount() {
 
 function RequestedList({ products }) {
 	const { mutate: updateProduct } = useUpdateProduct();
-	const { mutate: markAllAsOrdered } = useMarkAllAsOrdered();
+	const { mutate: orderAllProducts } = useOrderAllProducts();
 
 	const requestedProducts = products.filter(
 		(product) => product.status === "Requested"
@@ -96,7 +96,7 @@ function RequestedList({ products }) {
 	};
 
 	const markAllProductsAsOrdered = () => {
-		markAllAsOrdered();
+		orderAllProducts();
 		toast.success("Marked All As Ordered", {
 			position: "bottom-center",
 			theme: "colored",

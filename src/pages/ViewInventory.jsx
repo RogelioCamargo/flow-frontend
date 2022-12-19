@@ -16,12 +16,10 @@ import Select from "../components/Select";
 import { LinkIcon } from "../icons";
 import { sortByProductName } from "../utils/sortter";
 
-function ViewInventory() {
+function ViewInventory({ filters, setFilters }) {
 	const products = useProducts();
 	const categories = useCategories();
-	const [category, setCategory] = useState("All");
-	const [search, setSearch] = useState("");
-
+	const { category, search } = filters;
 	const productsFilteredByCategory =
 		category === "All"
 			? products
@@ -34,24 +32,43 @@ function ViewInventory() {
 	return (
 		<div className="prose md:max-w-lg lg:max-w-4xl mx-auto">
 			<h2 className="text-center mt-10">View Inventory</h2>
-			<div className="px-1 md:grid md:grid-cols-2 md:gap-2">
-				<Input
-					placeholder="Search"
-					value={search}
-					onChange={(e) => setSearch(e.target.value.toLowerCase())}
-					className="mb-3 md:mb-0"
-				/>
-				<Select
-					value={category}
-					onChange={({ target }) => setCategory(target.value)}
+			<div className="px-1 md:grid md:grid-cols-6 md:gap-2">
+				<div className="mb-3 md:mb-0 md:col-span-3">
+					<Input
+						placeholder="Search"
+						value={search}
+						onChange={(e) =>
+							setFilters((previousFilters) => ({
+								...previousFilters,
+								search: e.target.value.toLowerCase(),
+							}))
+						}
+					/>
+				</div>
+				<div className="mb-3 md:mb-0 md:col-span-2">
+					<Select
+						value={category}
+						onChange={({ target }) =>
+							setFilters((previousFilters) => ({
+								...previousFilters,
+								category: target.value,
+							}))
+						}
+					>
+						<option value="All">All</option>
+						{categories.map((category) => (
+							<option key={category._id} value={category.name}>
+								{category.name}
+							</option>
+						))}
+					</Select>
+				</div>
+				<button
+					className="btn btn-primary btn-block"
+					onClick={() => setFilters({ category: "All", search: "" })}
 				>
-					<option value="All">All</option>
-					{categories.map((category) => (
-						<option key={category._id} value={category.name}>
-							{category.name}
-						</option>
-					))}
-				</Select>
+					Reset
+				</button>
 			</div>
 			<ProductTable>
 				<thead>
