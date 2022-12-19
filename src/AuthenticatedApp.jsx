@@ -1,3 +1,4 @@
+import { useState } from "react";
 import CountInventory from "./pages/CountInventory";
 import ReceiveInventory from "./pages/ReceiveInventory";
 import Header from "./components/Header";
@@ -26,34 +27,40 @@ function FullPageErrorFallback({ error }) {
 	);
 }
 
+const initialFilterState = {
+	category: "All",
+	search: "",
+};
+
 function AuthenticatedApp() {
+	const [filters, setFilters] = useState(initialFilterState);
+
 	return (
 		<ErrorBoundary FallbackComponent={FullPageErrorFallback}>
 			<div>
 				<Header />
 				<main>
 					<AsideMenu />
-					<AppRoutes />
+					<div className="md:ml-52 mt-20 md:mt-0 mb-24">
+						<Routes>
+							<Route path="/" element={<Dashboard />} />
+							<Route path="/dashboard" element={<Dashboard />} />
+							<Route
+								path="/view-inventory"
+								element={
+									<ViewInventory filters={filters} setFilters={setFilters} />
+								}
+							/>
+							<Route path="/count-inventory" element={<CountInventory />} />
+							<Route path="/receive-inventory" element={<ReceiveInventory />} />
+							<Route path="/product/:id" element={<Product />} />
+							<Route path="/tickets" element={<Tickets />} />
+							<Route path="/tickets/:ticketId" element={<Ticket />} />
+						</Routes>
+					</div>
 				</main>
 			</div>
 		</ErrorBoundary>
-	);
-}
-
-function AppRoutes() {
-	return (
-		<div className="md:ml-52 mt-20 md:mt-0 mb-24">
-			<Routes>
-				<Route path="/" element={<Dashboard />} />
-				<Route path="/dashboard" element={<Dashboard />} />
-				<Route path="/view-inventory" element={<ViewInventory />} />
-				<Route path="/count-inventory" element={<CountInventory />} />
-				<Route path="/receive-inventory" element={<ReceiveInventory />} />
-				<Route path="/product/:id" element={<Product />} />
-				<Route path="/tickets" element={<Tickets />} />
-				<Route path="/tickets/:ticketId" element={<Ticket />} />
-			</Routes>
-		</div>
 	);
 }
 
