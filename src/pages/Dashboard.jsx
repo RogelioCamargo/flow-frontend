@@ -14,12 +14,13 @@ import Input from "../components/Input";
 
 function Dashboard() {
 	const products = useProducts();
+	const productsSortedByName = sortByProductName(products);
 
 	return (
 		<div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
 			<DailyOrderCount />
-			<RequestedList products={products} />
-			<OrderedList products={products} />
+			<RequestedProducts products={productsSortedByName} />
+			<OrderedProducts products={productsSortedByName} />
 		</div>
 	);
 }
@@ -70,7 +71,7 @@ function DailyOrderCount() {
 	);
 }
 
-function RequestedList({ products }) {
+function RequestedProducts({ products }) {
 	const { mutate: updateProduct } = useUpdateProduct();
 	const { mutate: orderAllProducts } = useOrderAllProducts();
 
@@ -186,7 +187,7 @@ function RequestedList({ products }) {
 						</tr>
 					</thead>
 					<tbody>
-						{sortByProductName(requestedProducts).map((product, index) => {
+						{requestedProducts.map((product, index) => {
 							let lastRequestedDate =
 								formatDate(product?.lastRequestedDate) ?? null;
 
@@ -215,7 +216,7 @@ function RequestedList({ products }) {
 	);
 }
 
-function OrderedList({ products }) {
+function OrderedProducts({ products }) {
 	const orderedProducts = products.filter(
 		(product) => product.status === "Ordered"
 	);
@@ -235,7 +236,7 @@ function OrderedList({ products }) {
 						</tr>
 					</thead>
 					<tbody>
-						{sortByProductName(orderedProducts).map((product, index) => {
+						{orderedProducts.map((product, index) => {
 							let lastOrderedDate =
 								formatDate(product?.lastOrderedDate) ?? null;
 
