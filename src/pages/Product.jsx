@@ -58,7 +58,7 @@ function Product() {
 	};
 
 	if (isLoading) {
-		return <FullPageSpinner />;
+		return <FullPageSpinner size={12} />;
 	}
 
 	if (isError) {

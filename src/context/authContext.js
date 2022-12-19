@@ -60,7 +60,7 @@ function AuthProvider(props) {
 	);
 
 	if (isLoading || isIdle) {
-		return <FullPageSpinner />;
+		return <FullPageSpinner size={12} />;
 	}
 
 	if (isError) {
