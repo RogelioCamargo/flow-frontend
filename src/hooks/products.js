@@ -31,7 +31,7 @@ function useCreateProduct() {
 	});
 }
 
-function useMarkAllAsOrdered() {
+function useOrderAllProducts() {
 	const client = useClient();
 	const queryClient = useQueryClient();
 	return useMutation({
@@ -85,7 +85,7 @@ export {
 	useProducts,
 	useProduct,
 	useUpdateProduct,
-	useMarkAllAsOrdered,
+	useOrderAllProducts,
 	useDecrementSupplyCounts,
 	useCreateProduct,
 	useRemoveProduct,
