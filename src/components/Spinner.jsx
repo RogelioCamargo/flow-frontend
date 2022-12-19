@@ -1,6 +1,6 @@
 function Spinner({ size, color = "primary" } = {}) {
 	return (
-		<div className={`w-${size} text-${color}`}>
+		<div className={`w-${size} h-${size} text-${color}`}>
 			<div
 				style={{ borderTopColor: "transparent" }}
 				className={`w-${size} h-${size} border-4 border-current border-solid rounded-full animate-spin`}
