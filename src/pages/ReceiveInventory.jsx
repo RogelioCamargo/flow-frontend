@@ -21,39 +21,40 @@ function ReceiveInventory() {
 	);
 
 	return (
-		<div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
-			<h2 className="text-center mt-10 mb-0">Receive Inventory</h2>
-			{orderedProducts.length === 0 ? (
-				<EmptyList message="No ordered products to receive." />
-			) : (
-				<ProductTable>
-					<thead>
-						<tr>
-							<th></th>
-							<th>Name</th>
-							<th>Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						{sortByProductName(orderedProducts).map((product, index) => {
-							return (
-								<tr key={product._id}>
-									<td>{index + 1}</td>
-									<td>
-										<ProductName product={product} />
-									</td>
-									<td>
-										<ReceiveSelectedProductModal product={product} />
-									</td>
-								</tr>
-							);
-						})}
-					</tbody>
-				</ProductTable>
-			)}
-
+		<>
+			<div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
+				<h2 className="text-center mt-10 mb-0">Receive Inventory</h2>
+				{orderedProducts.length === 0 ? (
+					<EmptyList message="No ordered products to receive." />
+				) : (
+					<ProductTable>
+						<thead>
+							<tr>
+								<th></th>
+								<th>Name</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							{sortByProductName(orderedProducts).map((product, index) => {
+								return (
+									<tr key={product._id}>
+										<td>{index + 1}</td>
+										<td>
+											<ProductName product={product} />
+										</td>
+										<td>
+											<ReceiveSelectedProductModal product={product} />
+										</td>
+									</tr>
+								);
+							})}
+						</tbody>
+					</ProductTable>
+				)}
+			</div>
 			<ReceiveProductModal products={products} />
-		</div>
+		</>
 	);
 }
 
@@ -81,6 +82,8 @@ function ReceiveProductModal({ products }) {
 			theme: "colored",
 		});
 		setQuantity("");
+		setSearch("");
+		setSelectedProduct(null);
 	};
 
 	return (
@@ -96,7 +99,7 @@ function ReceiveProductModal({ products }) {
 					placeholder="i.e. Poly Bags"
 					label="Name"
 					value={search}
-					onChange={(e) => setSearch(e.target.value.toLowerCase())}
+					onChange={({ target }) => setSearch(target.value)}
 					className="mb-3 md:mb-0"
 				/>
 				{search === "" ? null : results.length === 0 ? (

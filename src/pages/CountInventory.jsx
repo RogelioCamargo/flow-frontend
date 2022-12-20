@@ -8,22 +8,21 @@ import { sortByProductCategory, sortByProductName } from "../utils/sortter";
 function CountInventory() {
 	const products = useProducts();
 	const productsSortedByCategory = sortByProductCategory(products);
+	const productsSortedByName = sortByProductName(products);
 
 	return (
 		<div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
-			<Counts products={productsSortedByCategory} />
-			<Requesting products={products} />
+			<InventoryCounts products={productsSortedByCategory} />
+			<ProductsRequesting products={productsSortedByName} />
 		</div>
 	);
 }
 
-function Counts({ products }) {
+function InventoryCounts({ products }) {
 	const [quantity, setQuantity] = useState("");
 	const [index, setIndex] = useState(0);
-	const { mutate } = useUpdateProduct();
-
+	const { mutate: updateProduct } = useUpdateProduct();
 	const product = products[index];
-	const isEndOfList = index === products.length;
 
 	const restartCounts = () => {
 		setIndex(0);
@@ -35,7 +34,7 @@ function Counts({ products }) {
 			quantity: Number(quantity),
 		};
 
-		mutate(updates);
+		updateProduct(updates);
 		setQuantity("");
 	};
 
@@ -46,15 +45,15 @@ function Counts({ products }) {
 			lastRequestedDate: new Date(),
 		};
 
-		mutate(updates);
+		updateProduct(updates);
 	};
 
-	const previous = () => {
+	const previousProduct = () => {
 		setIndex((previousIndex) => previousIndex - 1);
 		setQuantity("");
 	};
 
-	const next = () => {
+	const nextProduct = () => {
 		setIndex((previousIndex) => previousIndex + 1);
 		setQuantity("");
 	};
@@ -63,8 +62,9 @@ function Counts({ products }) {
 		<>
 			<h2 className="text-center mt-10">Count Inventory</h2>
 			<div className="flex flex-col items-center">
-				{isEndOfList ? (
+				{index === products.length ? (
 					<div className="card w-96 bg-neutral text-neutral-content h-80">
+						{/* Display End of List Message */}
 						<div className="card-body items-center text-center">
 							<h3 className="card-title">End of Inventory Counts!</h3>
 							<p className="py-3">
@@ -80,6 +80,7 @@ function Counts({ products }) {
 					</div>
 				) : (
 					<div className="card bg-gray-800 w-96 h-80">
+						{/* Display Product */}
 						<div className="card-body">
 							<h3 className="card-title h-14 mt-3">{product.name}</h3>
 							<Input
@@ -111,11 +112,12 @@ function Counts({ products }) {
 					</div>
 				)}
 			</div>
+			{/* Controls */}
 			<div className="flex justify-center">
 				<div className="btn-group grid grid-cols-3 w-96 mt-3">
 					<button
 						className={`btn btn-outline ${index <= 0 ? "btn-disabled" : ""}`}
-						onClick={previous}
+						onClick={previousProduct}
 					>
 						«
 					</button>
@@ -126,7 +128,7 @@ function Counts({ products }) {
 						className={`btn btn-outline ${
 							index >= products.length ? "btn-disabled" : ""
 						}`}
-						onClick={next}
+						onClick={nextProduct}
 					>
 						»
 					</button>
@@ -136,8 +138,8 @@ function Counts({ products }) {
 	);
 }
 
-function Requesting({ products }) {
-	const { mutate } = useUpdateProduct();
+function ProductsRequesting({ products }) {
+	const { mutate: updateProduct } = useUpdateProduct();
 
 	const requestedProducts = products.filter(
 		(product) => product.status === "Requested"
@@ -149,7 +151,7 @@ function Requesting({ products }) {
 			status: "None",
 		};
 
-		mutate(updates);
+		updateProduct(updates);
 	};
 
 	return (
@@ -167,26 +169,24 @@ function Requesting({ products }) {
 						</tr>
 					</thead>
 					<tbody>
-						{sortByProductName(requestedProducts).map(
-							(requestedProduct, index) => {
-								return (
-									<tr key={requestedProduct._id}>
-										<td>{index + 1}</td>
-										<td>
-											<ProductName product={requestedProduct} />
-										</td>
-										<td>
-											<button
-												className="btn btn-error btn-sm"
-												onClick={() => unrequestProduct(requestedProduct)}
-											>
-												Unrequest
-											</button>
-										</td>
-									</tr>
-								);
-							}
-						)}
+						{requestedProducts.map((requestedProduct, index) => {
+							return (
+								<tr key={requestedProduct._id}>
+									<td>{index + 1}</td>
+									<td>
+										<ProductName product={requestedProduct} />
+									</td>
+									<td>
+										<button
+											className="btn btn-error btn-sm"
+											onClick={() => unrequestProduct(requestedProduct)}
+										>
+											Unrequest
+										</button>
+									</td>
+								</tr>
+							);
+						})}
 					</tbody>
 				</ProductTable>
 			)}
