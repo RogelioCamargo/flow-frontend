@@ -82,6 +82,8 @@ function ReceiveProductModal({ products }) {
 			theme: "colored",
 		});
 		setQuantity("");
+		setSearch("");
+		setSelectedProduct(null);
 	};
 
 	return (
@@ -97,7 +99,7 @@ function ReceiveProductModal({ products }) {
 					placeholder="i.e. Poly Bags"
 					label="Name"
 					value={search}
-					onChange={(e) => setSearch(e.target.value.toLowerCase())}
+					onChange={({ target }) => setSearch(target.value)}
 					className="mb-3 md:mb-0"
 				/>
 				{search === "" ? null : results.length === 0 ? (
