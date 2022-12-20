@@ -32,44 +32,49 @@ function Tickets() {
 						value={search}
 						onChange={(event) => setSearch(event.target.value)}
 					/>
-
 				</div>
 				<CreateTicketModal />
 			</div>
-			<div className="overflow-x-auto">
-				<table className="table w-full">
-					<thead>
-						<tr>
-							<th>Tracking Number</th>
-							<td>Timestamp</td>
-							<th>Notes</th>
-						</tr>
-					</thead>
-					<tbody>
-						{ticketResults
-							.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1))
-							.map((ticket) => {
-								const timestamp = formatDateWithTime(ticket.createdAt);
-								return (
-									<tr key={ticket._id}>
-										<th>
-											<Link
-												to={`/tickets/${ticket._id}`}
-												className="no-underline"
-											>
-												{ticket.trackingNumber}
-											</Link>
-										</th>
-										<td>{timestamp}</td>
-										<td className="max-w-xs truncate">
-											{ticket.notes === "" ? "--" : ticket.notes}
-										</td>
-									</tr>
-								);
-							})}
-					</tbody>
-				</table>
-			</div>
+			{ticketResults.length === 0 ? (
+				<div className="text-center mt-5">
+					No results found. Try a different tracking number.
+				</div>
+			) : (
+				<div className="overflow-x-auto">
+					<table className="table w-full">
+						<thead>
+							<tr>
+								<th>Tracking Number</th>
+								<td>Timestamp</td>
+								<th>Notes</th>
+							</tr>
+						</thead>
+						<tbody>
+							{ticketResults
+								.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1))
+								.map((ticket) => {
+									const timestamp = formatDateWithTime(ticket.createdAt);
+									return (
+										<tr key={ticket._id}>
+											<th>
+												<Link
+													to={`/tickets/${ticket._id}`}
+													className="no-underline"
+												>
+													{ticket.trackingNumber}
+												</Link>
+											</th>
+											<td>{timestamp}</td>
+											<td className="max-w-xs truncate">
+												{ticket.notes === "" ? "--" : ticket.notes}
+											</td>
+										</tr>
+									);
+								})}
+						</tbody>
+					</table>
+				</div>
+			)}
 		</div>
 	);
 }
@@ -98,9 +103,7 @@ function CreateTicketModal() {
 	return (
 		<Modal>
 			<ModalOpenButton>
-				<button className="btn btn-primary">
-					+ Ticket
-				</button>
+				<button className="btn btn-primary">+ Ticket</button>
 			</ModalOpenButton>
 			<ModalContent title="New Ticket">
 				<ModalDismissButton onClick={resetNewTicket} />
