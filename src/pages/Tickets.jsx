@@ -25,12 +25,16 @@ function Tickets() {
 	return (
 		<div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
 			<h2 className="text-center mt-10">Tickets</h2>
-			<div className="px-1">
-				<Input
-					placeholder="Search Tracking Number"
-					value={search}
-					onChange={(event) => setSearch(event.target.value)}
-				/>
+			<div className="px-1 md:px-0 grid grid-cols-4 gap-2">
+				<div className="col-span-3">
+					<Input
+						placeholder="Search Tracking Number"
+						value={search}
+						onChange={(event) => setSearch(event.target.value)}
+					/>
+
+				</div>
+				<CreateTicketModal />
 			</div>
 			<div className="overflow-x-auto">
 				<table className="table w-full">
@@ -66,8 +70,6 @@ function Tickets() {
 					</tbody>
 				</table>
 			</div>
-
-			<CreateTicketModal />
 		</div>
 	);
 }
@@ -96,8 +98,8 @@ function CreateTicketModal() {
 	return (
 		<Modal>
 			<ModalOpenButton>
-				<button className="btn btn-primary fixed bottom-5 right-5 text-3xl flex justify-center items-center text-white rounded-full w-12 h-12">
-					+
+				<button className="btn btn-primary">
+					+ Ticket
 				</button>
 			</ModalOpenButton>
 			<ModalContent title="New Ticket">
