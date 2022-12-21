@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import { useTickets, useCreateTicket } from "../hooks/tickets";
 import { toast } from "react-toastify";
 import {
@@ -23,7 +23,7 @@ function Tickets() {
 					ticket.trackingNumber.includes(search.trim())
 			  );
 	return (
-		<div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
+		<div className="prose md:max-w-lg lg:max-w-4xl mx-auto">
 			<h2 className="text-center mt-10">Tickets</h2>
 			<div className="px-1 md:px-0 grid grid-cols-4 gap-2">
 				<div className="col-span-3">
@@ -89,6 +89,7 @@ function CreateTicketModal() {
 	const { mutate: createTicket } = useCreateTicket();
 	const isConfirmDisabled = newTicket.trackingNumber === "";
 	const resetNewTicket = () => setNewTicket(initialNewTicketDetails);
+	const trackingInputRef = useRef();
 
 	const createNewTicket = () => {
 		createTicket(newTicket);
@@ -100,25 +101,36 @@ function CreateTicketModal() {
 		});
 	};
 
+	const focusInput = useCallback(() => {
+		trackingInputRef.current.focus();
+	}, []);
+
 	return (
 		<Modal>
 			<ModalOpenButton>
 				<button className="btn btn-primary">+ Ticket</button>
 			</ModalOpenButton>
-			<ModalContent title="New Ticket">
+			<ModalContent title="New Ticket" focusInput={focusInput}>
 				<ModalDismissButton onClick={resetNewTicket} />
 				<form>
-					<Input
-						label="Tracking Number"
-						value={newTicket.trackingNumber}
-						required
-						onChange={(event) =>
-							setNewTicket({
-								...newTicket,
-								trackingNumber: event.target.value,
-							})
-						}
-					/>
+					<div className="form-control w-full">
+						<label className="label">
+							<span className="label-text">Tracking Number</span>
+						</label>
+						<input
+							type="text"
+							className={`input input-bordered w-full`}
+							value={newTicket.trackingNumber}
+							ref={trackingInputRef}
+							required
+							onChange={(event) =>
+								setNewTicket({
+									...newTicket,
+									trackingNumber: event.target.value,
+								})
+							}
+						/>
+					</div>
 					<div className="form-control">
 						<label className="label">
 							<span className="label-text">Notes</span>

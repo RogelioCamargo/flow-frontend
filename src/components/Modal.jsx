@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext } from "react";
 import { CloseIcon } from "../icons";
+import { useEffect } from "react";
 
 const callAll =
 	(...fns) =>
@@ -52,8 +53,14 @@ const ModalConfirmButton = ({ className, children, onClick }) => {
 	);
 };
 
-const ModalContentsBase = ({ children, props }) => {
+const ModalContentsBase = ({ children, props, focusInput = null } = {}) => {
 	const [isOpen] = useContext(ModalContext);
+
+	useEffect(() => {
+		if (isOpen && focusInput) {
+			focusInput();
+		}
+	}, [isOpen, focusInput]);
 
 	return (
 		<div
