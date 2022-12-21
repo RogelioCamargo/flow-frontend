@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { toast } from "react-toastify";
 import EmptyList from "../components/EmptyList";
 import Input from "../components/Input";
@@ -63,6 +63,11 @@ function ReceiveProductModal({ products }) {
 	const [quantity, setQuantity] = useState("");
 	const { mutate: updateProduct } = useUpdateProduct();
 	const [selectedProduct, setSelectedProduct] = useState(null);
+	const productInputRef = useRef();
+
+	const focusInput = useCallback(() => {
+		productInputRef.current.focus();
+	}, []);
 
 	const results = products.filter((product) =>
 		product.name.toLowerCase().includes(search.toLocaleLowerCase())
@@ -93,12 +98,13 @@ function ReceiveProductModal({ products }) {
 					+
 				</button>
 			</ModalOpenButton>
-			<ModalContent title="Receive">
+			<ModalContent title="Receive" focusInput={focusInput}>
 				<ModalDismissButton onClick={() => setSearch("")} />
 				<Input
 					placeholder="i.e. Poly Bags"
 					label="Name"
 					value={search}
+					ref={productInputRef}
 					onChange={({ target }) => setSearch(target.value)}
 					className="mb-3 md:mb-0"
 				/>
@@ -140,6 +146,11 @@ function ReceiveProductModal({ products }) {
 function ReceiveSelectedProductModal({ product }) {
 	const { mutate: updateProduct } = useUpdateProduct();
 	const [quantity, setQuantity] = useState("");
+	const quantityInputRef = useRef();
+
+	const focusInput = useCallback(() => {
+		quantityInputRef.current.focus();
+	}, []);
 
 	const confirmQuantity = () => {
 		const updates = {
@@ -162,7 +173,7 @@ function ReceiveSelectedProductModal({ product }) {
 			<ModalOpenButton>
 				<button className="btn btn-primary btn-sm">Receive</button>
 			</ModalOpenButton>
-			<ModalContent title="Confirm">
+			<ModalContent title="Confirm" focusInput={focusInput}>
 				<ModalDismissButton onClick={() => setQuantity("")} />
 				<p className="break-words-and-wrap mt-0 mb-3">
 					How many{" "}
@@ -172,6 +183,7 @@ function ReceiveSelectedProductModal({ product }) {
 				<Input
 					type="number"
 					value={quantity}
+					ref={quantityInputRef}
 					onChange={({ target }) => setQuantity(target.value)}
 				/>
 				<ModalConfirmButton
