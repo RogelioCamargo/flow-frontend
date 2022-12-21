@@ -113,24 +113,18 @@ function CreateTicketModal() {
 			<ModalContent title="New Ticket" focusInput={focusInput}>
 				<ModalDismissButton onClick={resetNewTicket} />
 				<form>
-					<div className="form-control w-full">
-						<label className="label">
-							<span className="label-text">Tracking Number</span>
-						</label>
-						<input
-							type="text"
-							className={`input input-bordered w-full`}
-							value={newTicket.trackingNumber}
-							ref={trackingInputRef}
-							required
-							onChange={(event) =>
-								setNewTicket({
-									...newTicket,
-									trackingNumber: event.target.value,
-								})
-							}
-						/>
-					</div>
+					<Input
+						label="Tracking Number"
+						value={newTicket.trackingNumber}
+						onChange={(event) =>
+							setNewTicket({
+								...newTicket,
+								trackingNumber: event.target.value,
+							})
+						}
+						ref={trackingInputRef}
+						required
+					/>
 					<div className="form-control">
 						<label className="label">
 							<span className="label-text">Notes</span>
