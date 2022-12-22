@@ -15,17 +15,21 @@ import { Link } from "react-router-dom";
 function Tickets() {
 	const [search, setSearch] = useState("");
 	const tickets = useTickets();
+	const ticketsSortedByCreatedAt = tickets.sort((a, b) =>
+		a.createdAt > b.createdAt ? -1 : 1
+	);
 
 	const ticketResults =
 		search === ""
-			? tickets
-			: tickets.filter((ticket) =>
+			? ticketsSortedByCreatedAt
+			: ticketsSortedByCreatedAt.filter((ticket) =>
 					ticket.trackingNumber.includes(search.trim())
 			  );
+
 	return (
 		<div className="prose md:max-w-lg lg:max-w-4xl mx-auto">
 			<h2 className="text-center mt-10">Tickets</h2>
-			<div className="px-1 md:px-0 grid grid-cols-4 gap-2">
+			<div className="px-1 md:px-0 grid grid-cols-4 gap-2 mb-5">
 				<div className="col-span-3">
 					<Input
 						placeholder="Search Tracking Number"
@@ -35,46 +39,53 @@ function Tickets() {
 				</div>
 				<CreateTicketModal />
 			</div>
-			{ticketResults.length === 0 ? (
-				<div className="text-center mt-5">
-					No results found. Try a different tracking number.
+			<TicketList tickets={ticketResults} />
+		</div>
+	);
+}
+
+function TicketList({ tickets }) {
+	if (tickets.length === 0) {
+		return <div className="text-center">No tickets.</div>;
+	}
+
+	return (
+		<div className="overflow-x-auto">
+			<div className="w-full">
+				{/* Header */}
+				<ul
+					className="list-none mx-0 my-2 py-1 grid grid-cols-2 font-bold bg-base-300 border-b border-gray-500"
+					style={{ minWidth: "750px" }}
+				>
+					<li>Tracking Number</li>
+					<li>Notes</li>
+				</ul>
+				{/* Tickets */}
+				<div>
+					{tickets.map((ticket, index) => (
+						<Link className="no-underline" to={`/tickets/${ticket._id}`}>
+							<ul
+								key={ticket._id}
+								className={`mx-0 my-3 list-none grid grid-cols-2 grid-col text-sm min-w-full font-normal ${
+									index % 2 !== 0 ? "bg-base-300" : ""
+								}`}
+								style={{ minWidth: "750px" }}
+							>
+								<li>
+									<div className="font-bold">{ticket.trackingNumber}</div>
+									<div className="opacity-50 mt-1">
+										{formatDateWithTime(ticket.createdAt)}
+									</div>
+								</li>
+
+								<li className="two-lines pr-3">
+									{ticket.notes === "" ? "--" : ticket.notes}
+								</li>
+							</ul>
+						</Link>
+					))}
 				</div>
-			) : (
-				<div className="overflow-x-auto">
-					<table className="table w-full">
-						<thead>
-							<tr>
-								<th>Tracking Number</th>
-								<td>Timestamp</td>
-								<th>Notes</th>
-							</tr>
-						</thead>
-						<tbody>
-							{ticketResults
-								.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1))
-								.map((ticket) => {
-									const timestamp = formatDateWithTime(ticket.createdAt);
-									return (
-										<tr key={ticket._id}>
-											<th>
-												<Link
-													to={`/tickets/${ticket._id}`}
-													className="no-underline"
-												>
-													{ticket.trackingNumber}
-												</Link>
-											</th>
-											<td>{timestamp}</td>
-											<td className="max-w-xs truncate">
-												{ticket.notes === "" ? "--" : ticket.notes}
-											</td>
-										</tr>
-									);
-								})}
-						</tbody>
-					</table>
-				</div>
-			)}
+			</div>
 		</div>
 	);
 }
