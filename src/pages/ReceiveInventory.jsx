@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useRef } from "react";
 import { toast } from "react-toastify";
-import EmptyList from "../components/EmptyList";
 import Input from "../components/Input";
 import {
 	Modal,
@@ -9,49 +8,27 @@ import {
 	ModalDismissButton,
 	ModalOpenButton,
 } from "../components/Modal";
-import { ProductName, ProductTable } from "../components/ProductTable";
 import { useProducts, useUpdateProduct } from "../hooks/products";
 import { sortByProductName } from "../utils/sortter";
+import ProductActionList from "../components/ProductActionList";
+import useFocusInput from "../hooks/useFocusInput";
 
 function ReceiveInventory() {
 	const products = useProducts();
+	const productsSortedByName = sortByProductName(products);
 
-	const orderedProducts = products.filter(
+	const orderedProducts = productsSortedByName.filter(
 		(product) => product.status === "Ordered"
 	);
 
 	return (
 		<>
-			<div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
+			<div className="prose md:max-w-lg lg:max-w-3xl mx-auto">
 				<h2 className="text-center mt-10 mb-0">Receive Inventory</h2>
-				{orderedProducts.length === 0 ? (
-					<EmptyList message="No ordered products to receive." />
-				) : (
-					<ProductTable>
-						<thead>
-							<tr>
-								<th></th>
-								<th>Name</th>
-								<th>Action</th>
-							</tr>
-						</thead>
-						<tbody>
-							{sortByProductName(orderedProducts).map((product, index) => {
-								return (
-									<tr key={product._id}>
-										<td>{index + 1}</td>
-										<td>
-											<ProductName product={product} />
-										</td>
-										<td>
-											<ReceiveSelectedProductModal product={product} />
-										</td>
-									</tr>
-								);
-							})}
-						</tbody>
-					</ProductTable>
-				)}
+				<ProductActionList
+					products={orderedProducts}
+					ActionButton={ReceiveSelectedProductModal}
+				/>
 			</div>
 			<ReceiveProductModal products={products} />
 		</>
@@ -63,11 +40,7 @@ function ReceiveProductModal({ products }) {
 	const [quantity, setQuantity] = useState("");
 	const { mutate: updateProduct } = useUpdateProduct();
 	const [selectedProduct, setSelectedProduct] = useState(null);
-	const productInputRef = useRef();
-
-	const focusInput = useCallback(() => {
-		productInputRef.current.focus();
-	}, []);
+	const [inputRef, focusOnInput] = useFocusInput();
 
 	const results = products.filter((product) =>
 		product.name.toLowerCase().includes(search.toLocaleLowerCase())
@@ -98,13 +71,13 @@ function ReceiveProductModal({ products }) {
 					+
 				</button>
 			</ModalOpenButton>
-			<ModalContent title="Receive" focusInput={focusInput}>
+			<ModalContent title="Receive" focusOnInput={focusOnInput}>
 				<ModalDismissButton onClick={() => setSearch("")} />
 				<Input
 					placeholder="i.e. Poly Bags"
 					label="Name"
 					value={search}
-					ref={productInputRef}
+					ref={inputRef}
 					onChange={({ target }) => setSearch(target.value)}
 					className="mb-3 md:mb-0"
 				/>
@@ -146,11 +119,7 @@ function ReceiveProductModal({ products }) {
 function ReceiveSelectedProductModal({ product }) {
 	const { mutate: updateProduct } = useUpdateProduct();
 	const [quantity, setQuantity] = useState("");
-	const quantityInputRef = useRef();
-
-	const focusInput = useCallback(() => {
-		quantityInputRef.current.focus();
-	}, []);
+	const [inputRef, focusOnInput] = useFocusInput();
 
 	const confirmQuantity = () => {
 		const updates = {
@@ -171,9 +140,9 @@ function ReceiveSelectedProductModal({ product }) {
 	return (
 		<Modal>
 			<ModalOpenButton>
-				<button className="btn btn-primary btn-sm">Receive</button>
+				<button className="btn btn-primary btn-xs md:btn-sm">Receive</button>
 			</ModalOpenButton>
-			<ModalContent title="Confirm" focusInput={focusInput}>
+			<ModalContent title="Confirm" focusOnInput={focusOnInput}>
 				<ModalDismissButton onClick={() => setQuantity("")} />
 				<p className="break-words-and-wrap mt-0 mb-3">
 					How many{" "}
@@ -183,7 +152,7 @@ function ReceiveSelectedProductModal({ product }) {
 				<Input
 					type="number"
 					value={quantity}
-					ref={quantityInputRef}
+					ref={inputRef}
 					onChange={({ target }) => setQuantity(target.value)}
 				/>
 				<ModalConfirmButton
