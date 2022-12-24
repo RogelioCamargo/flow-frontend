@@ -31,7 +31,7 @@ function Tickets() {
 	return (
 		<div className="prose md:max-w-lg lg:max-w-4xl mx-auto">
 			<h2 className="text-center mt-10">Tickets</h2>
-			<div className="px-1 md:px-0 grid grid-cols-4 gap-2 mb-5">
+			<div className="px-1 md:px-0 grid grid-cols-4 gap-2">
 				<div className="col-span-3">
 					<Input
 						placeholder="Search Tracking Number"
@@ -53,7 +53,7 @@ function TicketList({ tickets }) {
 
 	return (
 		<List>
-			<HeaderListItem className="grid-cols-2" style={{ minWidth: "650px" }}>
+			<HeaderListItem className="grid-cols-2" style={{ minWidth: "700px" }}>
 				<div>Tracking Number</div>
 				<div>Notes</div>
 			</HeaderListItem>
@@ -62,7 +62,7 @@ function TicketList({ tickets }) {
 					key={ticket._id}
 					className="grid-cols-2"
 					index={index}
-					style={{ minWidth: "650px" }}
+					style={{ minWidth: "700px" }}
 				>
 					<Link className="no-underline" to={`/tickets/${ticket._id}`}>
 						<div className="font-bold">{ticket.trackingNumber}</div>

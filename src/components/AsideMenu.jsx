@@ -78,7 +78,7 @@ const AsideMenu = () => {
 	const { logout } = useAuth();
 
 	return (
-		<aside className="hidden md:block fixed top-0 w-52 bg-base-200 prose-sm h-screen">
+		<aside className="hidden md:block fixed top-0 w-48 bg-base-200 prose-sm h-screen">
 			<ul className="menu h-screen text-white font-bold p-0 relative">
 				{/* Logo Button */}
 				<li className="flex items-center">

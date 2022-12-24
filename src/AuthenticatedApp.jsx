@@ -41,7 +41,7 @@ function AuthenticatedApp() {
 				<Header />
 				<main>
 					<AsideMenu />
-					<div className="md:ml-52 mt-20 md:mt-0 mb-24">
+					<div className="md:ml-48 mt-20 md:mt-0 mb-24">
 						<Routes>
 							<Route path="/" element={<Dashboard />} />
 							<Route path="/dashboard" element={<Dashboard />} />
