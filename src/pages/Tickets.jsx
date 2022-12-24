@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from "react";
+import React, { useState } from "react";
 import { useTickets, useCreateTicket } from "../hooks/tickets";
 import { toast } from "react-toastify";
 import {
@@ -11,21 +11,27 @@ import {
 import Input from "../components/Input";
 import { formatDateWithTime } from "../utils/formatter";
 import { Link } from "react-router-dom";
+import useFocusInput from "../hooks/useFocusInput";
+import { HeaderListItem, List, ListItem } from "../components/List";
 
 function Tickets() {
 	const [search, setSearch] = useState("");
 	const tickets = useTickets();
+	const ticketsSortedByCreatedDate = tickets.sort((a, b) =>
+		a.createdAt > b.createdAt ? -1 : 1
+	);
 
 	const ticketResults =
 		search === ""
-			? tickets
-			: tickets.filter((ticket) =>
+			? ticketsSortedByCreatedDate
+			: ticketsSortedByCreatedDate.filter((ticket) =>
 					ticket.trackingNumber.includes(search.trim())
 			  );
+
 	return (
 		<div className="prose md:max-w-lg lg:max-w-4xl mx-auto">
 			<h2 className="text-center mt-10">Tickets</h2>
-			<div className="px-1 md:px-0 grid grid-cols-4 gap-2">
+			<div className="px-1 md:px-0 grid grid-cols-4 gap-2 mb-5">
 				<div className="col-span-3">
 					<Input
 						placeholder="Search Tracking Number"
@@ -35,47 +41,41 @@ function Tickets() {
 				</div>
 				<CreateTicketModal />
 			</div>
-			{ticketResults.length === 0 ? (
-				<div className="text-center mt-5">
-					No results found. Try a different tracking number.
-				</div>
-			) : (
-				<div className="overflow-x-auto">
-					<table className="table w-full">
-						<thead>
-							<tr>
-								<th>Tracking Number</th>
-								<td>Timestamp</td>
-								<th>Notes</th>
-							</tr>
-						</thead>
-						<tbody>
-							{ticketResults
-								.sort((a, b) => (a.createdAt > b.createdAt ? -1 : 1))
-								.map((ticket) => {
-									const timestamp = formatDateWithTime(ticket.createdAt);
-									return (
-										<tr key={ticket._id}>
-											<th>
-												<Link
-													to={`/tickets/${ticket._id}`}
-													className="no-underline"
-												>
-													{ticket.trackingNumber}
-												</Link>
-											</th>
-											<td>{timestamp}</td>
-											<td className="max-w-xs truncate">
-												{ticket.notes === "" ? "--" : ticket.notes}
-											</td>
-										</tr>
-									);
-								})}
-						</tbody>
-					</table>
-				</div>
-			)}
+			<TicketList tickets={ticketResults} />
 		</div>
+	);
+}
+
+function TicketList({ tickets }) {
+	if (tickets.length === 0) {
+		return <div className="text-center">No tickets to display.</div>;
+	}
+
+	return (
+		<List>
+			<HeaderListItem className="grid-cols-2" style={{ minWidth: "650px" }}>
+				<div>Tracking Number</div>
+				<div>Notes</div>
+			</HeaderListItem>
+			{tickets.map((ticket, index) => (
+				<ListItem
+					key={ticket._id}
+					className="grid-cols-2"
+					index={index}
+					style={{ minWidth: "650px" }}
+				>
+					<Link className="no-underline" to={`/tickets/${ticket._id}`}>
+						<div className="font-bold">{ticket.trackingNumber}</div>
+						<div className="opacity-50">
+							{formatDateWithTime(ticket.createdAt)}
+						</div>
+					</Link>
+					<div className="two-lines pr-3">
+						{ticket.notes === "" ? "--" : ticket.notes}
+					</div>
+				</ListItem>
+			))}
+		</List>
 	);
 }
 
@@ -87,9 +87,10 @@ const initialNewTicketDetails = {
 function CreateTicketModal() {
 	const [newTicket, setNewTicket] = useState(initialNewTicketDetails);
 	const { mutate: createTicket } = useCreateTicket();
+	const [inputRef, focusOnInput] = useFocusInput();
+
 	const isConfirmDisabled = newTicket.trackingNumber === "";
 	const resetNewTicket = () => setNewTicket(initialNewTicketDetails);
-	const trackingInputRef = useRef();
 
 	const createNewTicket = () => {
 		createTicket(newTicket);
@@ -101,16 +102,14 @@ function CreateTicketModal() {
 		});
 	};
 
-	const focusInput = useCallback(() => {
-		trackingInputRef.current.focus();
-	}, []);
-
 	return (
 		<Modal>
 			<ModalOpenButton>
-				<button className="btn btn-primary">+ Ticket</button>
+				<button className="btn btn-primary">
+					+<span className="ml-1 hidden md:block">Ticket</span>
+				</button>
 			</ModalOpenButton>
-			<ModalContent title="New Ticket" focusInput={focusInput}>
+			<ModalContent title="New Ticket" focusOnInput={focusOnInput}>
 				<ModalDismissButton onClick={resetNewTicket} />
 				<form>
 					<Input
@@ -122,7 +121,7 @@ function CreateTicketModal() {
 								trackingNumber: event.target.value,
 							})
 						}
-						ref={trackingInputRef}
+						ref={inputRef}
 						required
 					/>
 					<div className="form-control">

@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import EmptyList from "../components/EmptyList";
-import { ProductName, ProductTable } from "../components/ProductTable";
 import { formatDate } from "../utils/formatter";
 import {
 	useProducts,
@@ -11,6 +9,9 @@ import {
 import { toast } from "react-toastify";
 import { sortByProductName } from "../utils/sortter";
 import Input from "../components/Input";
+import ProductActionList from "../components/ProductActionList";
+import { HeaderListItem, List, ListItem } from "../components/List";
+import { Link } from "react-router-dom";
 
 function Dashboard() {
 	const products = useProducts();
@@ -174,44 +175,17 @@ function RequestedProducts({ products }) {
 					Mark All As Ordered
 				</button>
 			</div>
-			{requestedProducts.length === 0 ? (
-				<EmptyList message="No requested products to show." />
-			) : (
-				<ProductTable>
-					<thead>
-						<tr>
-							<th></th>
-							<th>Name</th>
-							<th>Action</th>
-							<th>Date Requested</th>
-						</tr>
-					</thead>
-					<tbody>
-						{requestedProducts.map((product, index) => {
-							let lastRequestedDate =
-								formatDate(product?.lastRequestedDate) ?? null;
-
-							return (
-								<tr key={product._id}>
-									<td>{index + 1}</td>
-									<td>
-										<ProductName product={product} />
-									</td>
-									<td>
-										<button
-											className="btn btn-primary btn-sm"
-											onClick={() => markProductAsOrdered(product)}
-										>
-											Mark as Ordered
-										</button>
-									</td>
-									<td>{lastRequestedDate ?? "--"}</td>
-								</tr>
-							);
-						})}
-					</tbody>
-				</ProductTable>
-			)}
+			<ProductActionList
+				products={requestedProducts}
+				ActionButton={({ product }) => (
+					<button
+						className="btn btn-primary btn-xs md:btn-sm"
+						onClick={() => markProductAsOrdered(product)}
+					>
+						Mark Ordered
+					</button>
+				)}
+			/>
 		</>
 	);
 }
@@ -224,35 +198,31 @@ function OrderedProducts({ products }) {
 	return (
 		<>
 			<h2 className="text-center mb-0">Ordered Products</h2>
-			{orderedProducts.length === 0 ? (
-				<EmptyList message="No ordered products to show." />
-			) : (
-				<ProductTable>
-					<thead>
-						<tr>
-							<th></th>
-							<th>Name</th>
-							<th>Date Ordered</th>
-						</tr>
-					</thead>
-					<tbody>
-						{orderedProducts.map((product, index) => {
-							let lastOrderedDate =
-								formatDate(product?.lastOrderedDate) ?? null;
-
-							return (
-								<tr key={product._id}>
-									<td>{index + 1}</td>
-									<td>
-										<ProductName product={product} />
-									</td>
-									<td>{lastOrderedDate ?? "--"}</td>
-								</tr>
-							);
-						})}
-					</tbody>
-				</ProductTable>
-			)}
+			<List>
+				<HeaderListItem className="grid-cols-3">
+					<div className="col-span-2">Name</div>
+					<div>Date Ordered</div>
+				</HeaderListItem>
+				{orderedProducts.map((product, index) => (
+					<ListItem
+						className="grid-cols-3"
+						key={product._id}
+						index={index}
+						style={{ minWidth: "350px" }}
+					>
+						<Link
+							className="no-underline col-span-2"
+							to={`/product/${product._id}`}
+						>
+							<div className="font-bold break-words-and-wrap">
+								{product.name}
+							</div>
+							<div className="text-sm opacity-50">{product.category.name}</div>
+						</Link>
+						<div>{formatDate(product?.lastOrderedDate) ?? "--"}</div>
+					</ListItem>
+				))}
+			</List>
 		</>
 	);
 }

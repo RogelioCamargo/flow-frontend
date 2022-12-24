@@ -53,14 +53,14 @@ const ModalConfirmButton = ({ className, children, onClick }) => {
 	);
 };
 
-const ModalContentsBase = ({ children, props, focusInput = null } = {}) => {
+const ModalContentsBase = ({ children, props, focusOnInput = null } = {}) => {
 	const [isOpen] = useContext(ModalContext);
 
 	useEffect(() => {
-		if (isOpen && focusInput) {
-			focusInput();
+		if (isOpen && focusOnInput) {
+			focusOnInput();
 		}
-	}, [isOpen, focusInput]);
+	}, [isOpen, focusOnInput]);
 
 	return (
 		<div

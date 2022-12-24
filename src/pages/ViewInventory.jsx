@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useProducts, useCreateProduct } from "../hooks/products";
 import { useCategories } from "../hooks/categories";
 import { formatDate } from "../utils/formatter";
-import { ProductName, ProductTable } from "../components/ProductTable";
 import {
 	Modal,
 	ModalConfirmButton,
@@ -15,6 +14,8 @@ import Input from "../components/Input";
 import Select from "../components/Select";
 import { LinkIcon } from "../icons";
 import { sortByProductName } from "../utils/sortter";
+import { HeaderListItem, List, ListItem } from "../components/List";
+import { Link } from "react-router-dom";
 
 function ViewInventory({ filters, setFilters }) {
 	const products = useProducts();
@@ -31,7 +32,7 @@ function ViewInventory({ filters, setFilters }) {
 
 	return (
 		<>
-			<div className="prose md:max-w-lg lg:max-w-4xl mx-auto">
+			<div className="prose md:max-w-lg lg:max-w-5xl mx-auto">
 				<h2 className="text-center mt-10">View Inventory</h2>
 				<div className="px-1 md:grid md:grid-cols-6 md:gap-2">
 					<div className="mb-3 md:mb-0 md:col-span-3">
@@ -71,74 +72,96 @@ function ViewInventory({ filters, setFilters }) {
 						Reset
 					</button>
 				</div>
-				<ProductTable>
-					<thead>
-						<tr>
-							<td></td>
-							<th>Name</th>
-							<th>Quantity</th>
-							<th>Status</th>
-							<th>Last Ordered</th>
-							<th>Last Received</th>
-							<th>Link</th>
-						</tr>
-					</thead>
-					<tbody>
-						{sortByProductName(productsFilteredBySearch).map(
-							(product, index) => {
-								const lastOrderedDate =
-									formatDate(product?.lastOrderedDate) ?? "--";
+				<List>
+					<HeaderListItem className="grid-cols-8" style={{ minWidth: "800px" }}>
+						<div className="col-span-3">Name</div>
+						<div>Quantity</div>
+						<div className="col-span-2">Details</div>
+						<div className="col-span-2">Timestamps</div>
+					</HeaderListItem>
 
-								const lastReceivedDate =
-									formatDate(product?.lastReceivedDate) ?? "--";
+					{sortByProductName(productsFilteredBySearch).map((product, index) => {
+						const lastOrderedDate = formatDate(product?.lastOrderedDate);
+						const lastReceivedDate = formatDate(product?.lastReceivedDate);
 
-								return (
-									<tr key={product._id}>
-										<td>{index + 1}</td>
-										<td>
-											<ProductName product={product} />
-										</td>
-										<td>
-											<div>{`${product.quantity} ${
-												product?.unitOfMeasure ?? ""
-											}${
-												product.quantity > 1 && product?.unitOfMeasure
-													? "s"
-													: ""
-											}`}</div>
-											{product?.unitsPerContainer ? (
-												<div className="text-sm opacity-50">
-													{`${product.unitsPerContainer} / 
+						return (
+							<ListItem
+								className="grid-cols-8"
+								key={product._id}
+								index={index}
+								style={{ minWidth: "800px" }}
+							>
+								<Link
+									className="no-underline col-span-3 pr-3"
+									to={`/product/${product._id}`}
+								>
+									<div className="font-bold break-words-and-wrap">
+										{product.name}
+									</div>
+									<div className="text-sm opacity-50">
+										{product.category.name}
+									</div>
+								</Link>
+								<div>
+									<div>{`${product.quantity} ${
+										product?.unitOfMeasure ?? null
+									}`}</div>
+									{/* {product?.unitsPerContainer ? (
+										<div className="text-sm opacity-50">
+											{`${product.unitsPerContainer} / 
 												${product?.unitOfMeasure ?? "Container"}`}
-												</div>
-											) : null}
-											{product.quantity < product?.lowQuantity ? (
-												<div className="badge badge-error badge-xs">Low</div>
-											) : null}
-										</td>
-										<td>{product.status === "None" ? "--" : product.status}</td>
-										<td>{lastOrderedDate}</td>
-										<td>{lastReceivedDate}</td>
-										<td>
-											{product?.purchaseLink ? (
-												<a
-													className="no-underline"
-													target="_blank"
-													rel="noreferrer"
-													href={`${product.purchaseLink}`}
-												>
-													<LinkIcon />
-												</a>
-											) : (
-												"--"
-											)}
-										</td>
-									</tr>
-								);
-							}
-						)}
-					</tbody>
-				</ProductTable>
+										</div>
+									) : null} */}
+									{product.quantity < product?.lowQuantity ? (
+										<div className="badge badge-error badge-sm">Low</div>
+									) : null}
+								</div>
+								<div className="col-span-2 flex items-center">
+									{product.status !== "None" ? (
+										<div
+											className={`badge badge-${
+												product.status === "Requested" ? "primary" : "secondary"
+											} badge-sm mr-2`}
+										>
+											{product.status}
+										</div>
+									) : null}
+
+									<div>
+										{product?.purchaseLink ? (
+											<a
+												className="no-underline"
+												target="_blank"
+												rel="noreferrer"
+												href={`${product.purchaseLink}`}
+											>
+												<LinkIcon />
+											</a>
+										) : null}
+									</div>
+								</div>
+								<div className="col-span-2">
+									<div>
+										{lastOrderedDate ? (
+											<div className="flex">
+												<div className="w-24 mr-1">Last Ordered:</div>
+												<div>{lastOrderedDate}</div>
+											</div>
+										) : null}
+									</div>
+									<div>
+										{lastReceivedDate ? (
+											<div className="flex">
+												<div className="w-24 mr-1">Last Received:</div>
+												<div>{lastReceivedDate}</div>
+											</div>
+										) : null}
+									</div>
+								</div>
+							</ListItem>
+						);
+					})}
+				</List>
 			</div>
 			<CreateProductModal categories={categories} />
 		</>

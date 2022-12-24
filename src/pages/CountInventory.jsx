@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import EmptyList from "../components/EmptyList";
 import Input from "../components/Input";
-import { ProductName, ProductTable } from "../components/ProductTable";
 import { useProducts, useUpdateProduct } from "../hooks/products";
 import { sortByProductCategory, sortByProductName } from "../utils/sortter";
+import ProductActionList from "../components/ProductActionList";
 
 function CountInventory() {
 	const products = useProducts();
@@ -145,9 +144,9 @@ function ProductsRequesting({ products }) {
 		(product) => product.status === "Requested"
 	);
 
-	const unrequestProduct = (productToRemove) => {
+	const unrequestProduct = (product) => {
 		const updates = {
-			...productToRemove,
+			...product,
 			status: "None",
 		};
 
@@ -157,39 +156,17 @@ function ProductsRequesting({ products }) {
 	return (
 		<>
 			<h2 className="text-center mb-0">Requesting</h2>
-			{requestedProducts.length === 0 ? (
-				<EmptyList message="Products you request will be displayed here." />
-			) : (
-				<ProductTable>
-					<thead>
-						<tr>
-							<th></th>
-							<th>Name</th>
-							<th>Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						{requestedProducts.map((requestedProduct, index) => {
-							return (
-								<tr key={requestedProduct._id}>
-									<td>{index + 1}</td>
-									<td>
-										<ProductName product={requestedProduct} />
-									</td>
-									<td>
-										<button
-											className="btn btn-error btn-sm"
-											onClick={() => unrequestProduct(requestedProduct)}
-										>
-											Unrequest
-										</button>
-									</td>
-								</tr>
-							);
-						})}
-					</tbody>
-				</ProductTable>
-			)}
+			<ProductActionList
+				products={requestedProducts}
+				ActionButton={({ product }) => (
+					<button
+						className="btn btn-error btn-xs md:btn-sm"
+						onClick={() => unrequestProduct(product)}
+					>
+						Unrequest
+					</button>
+				)}
+			/>
 		</>
 	);
 }
