@@ -34,8 +34,8 @@ function ViewInventory({ filters, setFilters }) {
 		<>
 			<div className="prose md:max-w-lg lg:max-w-5xl mx-auto">
 				<h2 className="text-center mt-10">View Inventory</h2>
-				<div className="px-1 md:grid md:grid-cols-6 md:gap-2">
-					<div className="mb-3 md:mb-0 md:col-span-3">
+				<div className="px-1 grid grid-cols-5 gap-2">
+					<div className="mb-0 col-span-2">
 						<Input
 							placeholder="Search"
 							value={search}
@@ -47,7 +47,7 @@ function ViewInventory({ filters, setFilters }) {
 							}
 						/>
 					</div>
-					<div className="mb-3 md:mb-0 md:col-span-2">
+					<div className="mb-0 col-span-2">
 						<Select
 							value={category}
 							onChange={({ target }) =>
@@ -69,14 +69,32 @@ function ViewInventory({ filters, setFilters }) {
 						className="btn btn-primary btn-block"
 						onClick={() => setFilters({ category: "All", search: "" })}
 					>
-						Reset
+						<span className="hidden md:block">Reset</span>
+						<span className="md:hidden">
+							<svg
+								stroke="currentColor"
+								fill="currentColor"
+								strokeWidth="0"
+								viewBox="0 0 24 24"
+								height="1em"
+								width="1em"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									fill="none"
+									stroke="#000"
+									strokeWidth="2"
+									d="M20,8 C18.5974037,5.04031171 15.536972,3 12,3 C7.02943725,3 3,7.02943725 3,12 C3,16.9705627 7.02943725,21 12,21 L12,21 C16.9705627,21 21,16.9705627 21,12 M21,3 L21,9 L15,9"
+								></path>
+							</svg>
+						</span>
 					</button>
 				</div>
 				<List>
-					<HeaderListItem className="grid-cols-8" style={{ minWidth: "800px" }}>
+					<HeaderListItem className="grid-cols-7" style={{ minWidth: "800px" }}>
 						<div className="col-span-3">Name</div>
 						<div>Quantity</div>
-						<div className="col-span-2">Details</div>
+						<div>Details</div>
 						<div className="col-span-2">Timestamps</div>
 					</HeaderListItem>
 
@@ -86,7 +104,7 @@ function ViewInventory({ filters, setFilters }) {
 
 						return (
 							<ListItem
-								className="grid-cols-8"
+								className="grid-cols-7"
 								key={product._id}
 								index={index}
 								style={{ minWidth: "800px" }}
@@ -104,7 +122,7 @@ function ViewInventory({ filters, setFilters }) {
 								</Link>
 								<div>
 									<div>{`${product.quantity} ${
-										product?.unitOfMeasure ?? null
+										product?.unitOfMeasure ?? ""
 									}`}</div>
 									{/* {product?.unitsPerContainer ? (
 										<div className="text-sm opacity-50">
@@ -112,11 +130,11 @@ function ViewInventory({ filters, setFilters }) {
 												${product?.unitOfMeasure ?? "Container"}`}
 										</div>
 									) : null} */}
-									{product.quantity < product?.lowQuantity ? (
+									{product.quantity <= product?.lowQuantity ? (
 										<div className="badge badge-error badge-sm">Low</div>
 									) : null}
 								</div>
-								<div className="col-span-2 flex items-center">
+								<div className="flex items-center">
 									{product.status !== "None" ? (
 										<div
 											className={`badge badge-${
@@ -126,7 +144,6 @@ function ViewInventory({ filters, setFilters }) {
 											{product.status}
 										</div>
 									) : null}
-
 									<div>
 										{product?.purchaseLink ? (
 											<a
