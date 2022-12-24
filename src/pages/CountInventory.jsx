@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Input from "../components/Input";
+import Input from "../components/Form/Input";
 import { useProducts, useUpdateProduct } from "../hooks/products";
 import { sortByProductCategory, sortByProductName } from "../utils/sortter";
 import ProductActionList from "../components/ProductActionList";

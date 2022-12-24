@@ -8,7 +8,7 @@ import {
 } from "../hooks/products";
 import { toast } from "react-toastify";
 import { sortByProductName } from "../utils/sortter";
-import Input from "../components/Input";
+import Input from "../components/Form/Input";
 import ProductActionList from "../components/ProductActionList";
 import { EmptyList, HeaderListItem, List, ListItem } from "../components/List";
 import { Link } from "react-router-dom";

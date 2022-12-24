@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import Input from "../components/Input";
+import Input from "../components/Form/Input";
 import {
 	Modal,
 	ModalConfirmButton,

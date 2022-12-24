@@ -1,7 +1,7 @@
 import React from "react";
 import { useRemoveTicket, useTicket, useUpdateTicket } from "../hooks/tickets";
 import { useNavigate, useParams } from "react-router-dom";
-import Input from "../components/Input";
+import Input from "../components/Form/Input";
 import {
 	Modal,
 	ModalContent,

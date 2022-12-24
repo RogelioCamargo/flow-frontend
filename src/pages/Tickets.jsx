@@ -8,7 +8,7 @@ import {
 	ModalDismissButton,
 	ModalOpenButton,
 } from "../components/Modal";
-import Input from "../components/Input";
+import Input from "../components/Form/Input";
 import { formatDateWithTime } from "../utils/formatter";
 import { Link } from "react-router-dom";
 import useFocusInput from "../hooks/useFocusInput";

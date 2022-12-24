@@ -10,8 +10,8 @@ import {
 	ModalOpenButton,
 } from "../components/Modal";
 import { toast } from "react-toastify";
-import Input from "../components/Input";
-import Select from "../components/Select";
+import Input from "../components/Form/Input";
+import Select from "../components/Form/Select";
 import { LinkIcon } from "../icons";
 import { sortByProductName } from "../utils/sortter";
 import { HeaderListItem, List, ListItem } from "../components/List";

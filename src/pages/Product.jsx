@@ -1,14 +1,14 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import Input from "../components/Input";
+import Input from "../components/Form/Input";
 import {
 	Modal,
 	ModalContent,
 	ModalDismissButton,
 	ModalOpenButton,
 } from "../components/Modal";
-import Select from "../components/Select";
+import Select from "../components/Form/Select";
 import { useCategories } from "../hooks/categories";
 import {
 	useProduct,
