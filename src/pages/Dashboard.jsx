@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import { sortByProductName } from "../utils/sortter";
 import Input from "../components/Input";
 import ProductActionList from "../components/ProductActionList";
-import { HeaderListItem, List, ListItem } from "../components/List";
+import { EmptyList, HeaderListItem, List, ListItem } from "../components/List";
 import { Link } from "react-router-dom";
 
 function Dashboard() {
@@ -194,6 +194,10 @@ function OrderedProducts({ products }) {
 	const orderedProducts = products.filter(
 		(product) => product.status === "Ordered"
 	);
+
+	if (orderedProducts.length === 0) {
+		return <EmptyList message="No tickets to display" />;
+	}
 
 	return (
 		<>

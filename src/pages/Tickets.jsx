@@ -12,7 +12,7 @@ import Input from "../components/Input";
 import { formatDateWithTime } from "../utils/formatter";
 import { Link } from "react-router-dom";
 import useFocusInput from "../hooks/useFocusInput";
-import { HeaderListItem, List, ListItem } from "../components/List";
+import { EmptyList, HeaderListItem, List, ListItem } from "../components/List";
 
 function Tickets() {
 	const [search, setSearch] = useState("");
@@ -48,7 +48,7 @@ function Tickets() {
 
 function TicketList({ tickets }) {
 	if (tickets.length === 0) {
-		return <div className="text-center">No tickets to display.</div>;
+		return <EmptyList message="No tickets to display" />;
 	}
 
 	return (

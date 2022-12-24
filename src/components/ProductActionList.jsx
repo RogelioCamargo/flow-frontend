@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import { HeaderListItem, List, ListItem } from "./List";
+import { EmptyList, HeaderListItem, List, ListItem } from "./List";
 
 function ProductActionList({ ActionButton, products }) {
 	if (products.length === 0) {
-		return <div className="text-center">No products to display.</div>;
+		return <EmptyList message="No products to display." />;
 	}
 
 	return (

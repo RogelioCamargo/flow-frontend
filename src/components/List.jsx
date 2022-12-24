@@ -1,3 +1,7 @@
+function EmptyList({ message }) {
+	return <div className="text-center mt-6">{message}</div>;
+}
+
 function List({ children }) {
 	return (
 		<div className="overflow-x-auto">
@@ -21,10 +25,7 @@ function HeaderListItem({ children, className, ...props }) {
 
 function ListItem({ children, className, index, ...props }) {
 	return (
-		<li
-			className={`px-5 ${index % 2 !== 0 ? "bg-base-300" : ""}`}
-			{...props}
-		>
+		<li className={`px-5 ${index % 2 !== 0 ? "bg-base-300" : ""}`} {...props}>
 			<div className={`h-20 items-center grid ${className} text-xs md:text-sm`}>
 				{children}
 			</div>
@@ -32,4 +33,4 @@ function ListItem({ children, className, index, ...props }) {
 	);
 }
 
-export { List, HeaderListItem, ListItem };
+export { EmptyList, List, HeaderListItem, ListItem };
