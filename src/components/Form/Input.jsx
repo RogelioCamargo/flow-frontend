@@ -1,4 +1,5 @@
 import React from "react";
+import { Label, SubLabel } from "./Label";
 
 const Input = React.forwardRef(
 	(
@@ -13,22 +14,14 @@ const Input = React.forwardRef(
 	) => {
 		return (
 			<div className="form-control w-full">
-				{label ? (
-					<label className="label">
-						<span className="label-text">{label}</span>
-					</label>
-				) : null}
+				{label ? <Label text={label} /> : null}
 				<input
 					type={type}
 					className={`input input-bordered w-full ${className}`}
 					{...props}
 					ref={ref}
 				/>
-				{sublabel ? (
-					<label className="label">
-						<span className="label-text-alt">{sublabel}</span>
-					</label>
-				) : null}
+				{sublabel ? <SubLabel text={sublabel} /> : null}
 			</div>
 		);
 	}

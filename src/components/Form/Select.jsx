@@ -1,13 +1,10 @@
 import React from "react";
+import { Label } from "./Label";
 
 const Select = ({ label = null, children, ...props } = {}) => {
 	return (
 		<div className="form-control w-full">
-			{label ? (
-				<label className="label">
-					<span className="label-text">{label}</span>
-				</label>
-			) : null}
+			{label ? <Label text={label} /> : null}
 			<select className="select select-bordered" {...props}>
 				{children}
 			</select>

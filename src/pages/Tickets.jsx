@@ -13,6 +13,7 @@ import { formatDateWithTime } from "../utils/formatter";
 import { Link } from "react-router-dom";
 import useFocusInput from "../hooks/useFocusInput";
 import { EmptyList, HeaderListItem, List, ListItem } from "../components/List";
+import TextArea from "../components/Form/TextArea";
 
 function Tickets() {
 	const [search, setSearch] = useState("");
@@ -124,21 +125,16 @@ function CreateTicketModal() {
 						ref={inputRef}
 						required
 					/>
-					<div className="form-control">
-						<label className="label">
-							<span className="label-text">Notes</span>
-						</label>
-						<textarea
-							className="textarea textarea-bordered h-24"
-							value={newTicket.notes}
-							onChange={(event) =>
-								setNewTicket({
-									...newTicket,
-									notes: event.target.value,
-								})
-							}
-						></textarea>
-					</div>
+					<TextArea
+						label="Notes"
+						value={newTicket.notes}
+						onChange={(event) =>
+							setNewTicket({
+								...newTicket,
+								notes: event.target.value,
+							})
+						}
+					/>
 				</form>
 				<ModalConfirmButton
 					className={isConfirmDisabled ? "btn-disabled" : ""}
