@@ -135,6 +135,18 @@ function ViewInventory({ filters, setFilters }) {
 									) : null}
 								</div>
 								<div className="flex items-center">
+									{product?.purchaseLink ? (
+										<div className="mr-2">
+											<a
+												className="no-underline"
+												target="_blank"
+												rel="noreferrer"
+												href={`${product.purchaseLink}`}
+											>
+												<LinkIcon />
+											</a>
+										</div>
+									) : null}
 									{product.status !== "None" ? (
 										<div
 											className={`badge badge-${
@@ -144,18 +156,6 @@ function ViewInventory({ filters, setFilters }) {
 											{product.status}
 										</div>
 									) : null}
-									<div>
-										{product?.purchaseLink ? (
-											<a
-												className="no-underline"
-												target="_blank"
-												rel="noreferrer"
-												href={`${product.purchaseLink}`}
-											>
-												<LinkIcon />
-											</a>
-										) : null}
-									</div>
 								</div>
 								<div className="col-span-2">
 									<div>
