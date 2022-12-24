@@ -12,6 +12,7 @@ import Input from "../components/Input";
 import { formatDateWithTime } from "../utils/formatter";
 import { Link } from "react-router-dom";
 import useFocusInput from "../hooks/useFocusInput";
+import { HeaderListItem, List, ListItem } from "../components/List";
 
 function Tickets() {
 	const [search, setSearch] = useState("");
@@ -51,42 +52,30 @@ function TicketList({ tickets }) {
 	}
 
 	return (
-		<div className="overflow-x-auto">
-			<div className="w-full">
-				{/* Tickets */}
-				<ul className="list-none p-0">
-					<li
-						className="px-5 h-14 items-center grid grid-cols-2 font-bold bg-base-300 border-b border-gray-500"
-						style={{ minWidth: "750px" }}
-					>
-						<div>Tracking Number</div>
-						<div>Notes</div>
-					</li>
-					{tickets.map((ticket, index) => (
-						<li
-							key={ticket._id}
-							className={`px-5 ${index % 2 !== 0 ? "bg-base-300" : ""}`}
-							style={{ minWidth: "750px" }}
-						>
-							<Link
-								className="h-20 no-underline text-sm grid grid-cols-2 items-center"
-								to={`/tickets/${ticket._id}`}
-							>
-								<div>
-									<div className="font-bold">{ticket.trackingNumber}</div>
-									<div className="opacity-50 mt-1">
-										{formatDateWithTime(ticket.createdAt)}
-									</div>
-								</div>
-								<div className="two-lines pr-3">
-									{ticket.notes === "" ? "--" : ticket.notes}
-								</div>
-							</Link>
-						</li>
-					))}
-				</ul>
-			</div>
-		</div>
+		<List>
+			<HeaderListItem className="grid-cols-2" style={{ minWidth: "650px" }}>
+				<div>Tracking Number</div>
+				<div>Notes</div>
+			</HeaderListItem>
+			{tickets.map((ticket, index) => (
+				<ListItem
+					key={ticket._id}
+					className="grid-cols-2"
+					index={index}
+					style={{ minWidth: "650px" }}
+				>
+					<Link className="no-underline" to={`/tickets/${ticket._id}`}>
+						<div className="font-bold">{ticket.trackingNumber}</div>
+						<div className="opacity-50">
+							{formatDateWithTime(ticket.createdAt)}
+						</div>
+					</Link>
+					<div className="two-lines pr-3">
+						{ticket.notes === "" ? "--" : ticket.notes}
+					</div>
+				</ListItem>
+			))}
+		</List>
 	);
 }
 
@@ -116,7 +105,9 @@ function CreateTicketModal() {
 	return (
 		<Modal>
 			<ModalOpenButton>
-				<button className="btn btn-primary">+ Ticket</button>
+				<button className="btn btn-primary">
+					+<span className="ml-1 hidden md:block">Ticket</span>
+				</button>
 			</ModalOpenButton>
 			<ModalContent title="New Ticket" focusOnInput={focusOnInput}>
 				<ModalDismissButton onClick={resetNewTicket} />
