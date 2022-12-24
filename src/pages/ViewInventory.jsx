@@ -113,7 +113,7 @@ function ViewInventory({ filters, setFilters }) {
 										</div>
 									) : null} */}
 									{product.quantity < product?.lowQuantity ? (
-										<div className="badge badge-error badge-xs">Low</div>
+										<div className="badge badge-error badge-sm">Low</div>
 									) : null}
 								</div>
 								<div className="col-span-2 flex items-center">
@@ -121,7 +121,7 @@ function ViewInventory({ filters, setFilters }) {
 										<div
 											className={`badge badge-${
 												product.status === "Requested" ? "primary" : "secondary"
-											} badge-xs mr-2`}
+											} badge-sm mr-2`}
 										>
 											{product.status}
 										</div>
