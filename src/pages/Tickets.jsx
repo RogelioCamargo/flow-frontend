@@ -8,11 +8,12 @@ import {
 	ModalDismissButton,
 	ModalOpenButton,
 } from "../components/Modal";
-import Input from "../components/Input";
+import Input from "../components/Form/Input";
 import { formatDateWithTime } from "../utils/formatter";
 import { Link } from "react-router-dom";
 import useFocusInput from "../hooks/useFocusInput";
-import { HeaderListItem, List, ListItem } from "../components/List";
+import { EmptyList, HeaderListItem, List, ListItem } from "../components/List";
+import TextArea from "../components/Form/TextArea";
 
 function Tickets() {
 	const [search, setSearch] = useState("");
@@ -31,7 +32,7 @@ function Tickets() {
 	return (
 		<div className="prose md:max-w-lg lg:max-w-4xl mx-auto">
 			<h2 className="text-center mt-10">Tickets</h2>
-			<div className="px-1 md:px-0 grid grid-cols-4 gap-2 mb-5">
+			<div className="px-1 md:px-0 grid grid-cols-4 gap-2">
 				<div className="col-span-3">
 					<Input
 						placeholder="Search Tracking Number"
@@ -48,22 +49,17 @@ function Tickets() {
 
 function TicketList({ tickets }) {
 	if (tickets.length === 0) {
-		return <div className="text-center">No tickets to display.</div>;
+		return <EmptyList message="No tickets to display" />;
 	}
 
 	return (
 		<List>
-			<HeaderListItem className="grid-cols-2" style={{ minWidth: "650px" }}>
+			<HeaderListItem style={{ minWidth: "700px" }}>
 				<div>Tracking Number</div>
 				<div>Notes</div>
 			</HeaderListItem>
 			{tickets.map((ticket, index) => (
-				<ListItem
-					key={ticket._id}
-					className="grid-cols-2"
-					index={index}
-					style={{ minWidth: "650px" }}
-				>
+				<ListItem key={ticket._id} index={index} style={{ minWidth: "700px" }}>
 					<Link className="no-underline" to={`/tickets/${ticket._id}`}>
 						<div className="font-bold">{ticket.trackingNumber}</div>
 						<div className="opacity-50">
@@ -124,21 +120,16 @@ function CreateTicketModal() {
 						ref={inputRef}
 						required
 					/>
-					<div className="form-control">
-						<label className="label">
-							<span className="label-text">Notes</span>
-						</label>
-						<textarea
-							className="textarea textarea-bordered h-24"
-							value={newTicket.notes}
-							onChange={(event) =>
-								setNewTicket({
-									...newTicket,
-									notes: event.target.value,
-								})
-							}
-						></textarea>
-					</div>
+					<TextArea
+						label="Notes"
+						value={newTicket.notes}
+						onChange={(event) =>
+							setNewTicket({
+								...newTicket,
+								notes: event.target.value,
+							})
+						}
+					/>
 				</form>
 				<ModalConfirmButton
 					className={isConfirmDisabled ? "btn-disabled" : ""}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import Input from "../components/Input";
+import Input from "../components/Form/Input";
 import {
 	Modal,
 	ModalConfirmButton,
@@ -10,8 +10,9 @@ import {
 } from "../components/Modal";
 import { useProducts, useUpdateProduct } from "../hooks/products";
 import { sortByProductName } from "../utils/sortter";
-import ProductActionList from "../components/ProductActionList";
+import { ProductActionButton, ProductName } from "../components/ProductList";
 import useFocusInput from "../hooks/useFocusInput";
+import { EmptyList, HeaderListItem, List, ListItem } from "../components/List";
 
 function ReceiveInventory() {
 	const products = useProducts();
@@ -21,14 +22,33 @@ function ReceiveInventory() {
 		(product) => product.status === "Ordered"
 	);
 
+	if (orderedProducts.length === 0) {
+		return <EmptyList message="No products to display" />;
+	}
+
 	return (
 		<>
 			<div className="prose md:max-w-lg lg:max-w-3xl mx-auto">
 				<h2 className="text-center mt-10 mb-0">Receive Inventory</h2>
-				<ProductActionList
-					products={orderedProducts}
-					ActionButton={ReceiveSelectedProductModal}
-				/>
+				<List>
+					<HeaderListItem numOfCols={3} style={{ minWidth: "350px" }}>
+						<div className="col-span-2">Name</div>
+						<div>Action</div>
+					</HeaderListItem>
+					{orderedProducts.map((product, index) => (
+						<ListItem
+							numOfCols={3}
+							key={product._id}
+							index={index}
+							style={{ minWidth: "350px" }}
+						>
+							<ProductName product={product} className="col-span-2" />
+							<div>
+								<ReceiveSelectedProductModal product={product} />
+							</div>
+						</ListItem>
+					))}
+				</List>
 			</div>
 			<ReceiveProductModal products={products} />
 		</>
@@ -71,7 +91,7 @@ function ReceiveProductModal({ products }) {
 					+
 				</button>
 			</ModalOpenButton>
-			<ModalContent title="Receive" focusOnInput={focusOnInput}>
+			<ModalContent title="Receive Product" focusOnInput={focusOnInput}>
 				<ModalDismissButton onClick={() => setSearch("")} />
 				<Input
 					placeholder="i.e. Poly Bags"
@@ -82,7 +102,7 @@ function ReceiveProductModal({ products }) {
 					className="mb-3 md:mb-0"
 				/>
 				{search === "" ? null : results.length === 0 ? (
-					<p className="text-center">No results found</p>
+					<p className="text-center mt-1">No results found</p>
 				) : !selectedProduct ? (
 					<ul className="list-none p-0 my-0 text-base overflow-y-scroll max-h-60">
 						{results.map((product) => (
@@ -140,7 +160,7 @@ function ReceiveSelectedProductModal({ product }) {
 	return (
 		<Modal>
 			<ModalOpenButton>
-				<button className="btn btn-primary btn-xs md:btn-sm">Receive</button>
+				<ProductActionButton>Receive</ProductActionButton>
 			</ModalOpenButton>
 			<ModalContent title="Confirm" focusOnInput={focusOnInput}>
 				<ModalDismissButton onClick={() => setQuantity("")} />
