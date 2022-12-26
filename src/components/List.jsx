@@ -12,10 +12,27 @@ function List({ children }) {
 	);
 }
 
-function HeaderListItem({ children, className, ...props }) {
+const getListItemStyles = ({ numOfCols, className }) =>
+	`px-5 grid grid-cols-${numOfCols} items-center text-xs ${className}`;
+
+function HeaderListItem({
+	children,
+	numOfCols = 2,
+	className = "",
+	...props
+} = {}) {
+	console.log(
+		getListItemStyles({
+			numOfCols,
+			className,
+		})
+	);
 	return (
 		<li
-			className={`px-5 h-14 items-center grid ${className} font-bold bg-base-300 border-b border-gray-500 text-xs uppercase`}
+			className={`${getListItemStyles({
+				numOfCols,
+				className,
+			})} h-14 font-bold bg-base-300 border-b border-gray-500 uppercase`}
 			{...props}
 		>
 			{children}
@@ -23,12 +40,21 @@ function HeaderListItem({ children, className, ...props }) {
 	);
 }
 
-function ListItem({ children, className, index, ...props }) {
+function ListItem({
+	children,
+	numOfCols = 2,
+	className = "",
+	index,
+	...props
+} = {}) {
 	return (
-		<li className={`px-5 ${index % 2 !== 0 ? "bg-base-300" : ""}`} {...props}>
-			<div className={`h-20 items-center grid ${className} text-xs md:text-sm`}>
-				{children}
-			</div>
+		<li
+			className={`${getListItemStyles({ numOfCols, className })} ${
+				index % 2 !== 0 ? "bg-base-300" : ""
+			} h-20 md:text-sm`}
+			{...props}
+		>
+			{children}
 		</li>
 	);
 }
