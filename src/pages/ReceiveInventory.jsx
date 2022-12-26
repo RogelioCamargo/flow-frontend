@@ -12,7 +12,7 @@ import { useProducts, useUpdateProduct } from "../hooks/products";
 import { sortByProductName } from "../utils/sortter";
 import { ProductActionButton, ProductName } from "../components/ProductList";
 import useFocusInput from "../hooks/useFocusInput";
-import { HeaderListItem, List, ListItem } from "../components/List";
+import { EmptyList, HeaderListItem, List, ListItem } from "../components/List";
 
 function ReceiveInventory() {
 	const products = useProducts();
@@ -21,6 +21,10 @@ function ReceiveInventory() {
 	const orderedProducts = productsSortedByName.filter(
 		(product) => product.status === "Ordered"
 	);
+
+	if (orderedProducts.length === 0) {
+		return <EmptyList message="No products to display" />;
+	}
 
 	return (
 		<>
@@ -87,7 +91,7 @@ function ReceiveProductModal({ products }) {
 					+
 				</button>
 			</ModalOpenButton>
-			<ModalContent title="Receive" focusOnInput={focusOnInput}>
+			<ModalContent title="Receive Product" focusOnInput={focusOnInput}>
 				<ModalDismissButton onClick={() => setSearch("")} />
 				<Input
 					placeholder="i.e. Poly Bags"
@@ -98,7 +102,7 @@ function ReceiveProductModal({ products }) {
 					className="mb-3 md:mb-0"
 				/>
 				{search === "" ? null : results.length === 0 ? (
-					<p className="text-center">No results found</p>
+					<p className="text-center mt-1">No results found</p>
 				) : !selectedProduct ? (
 					<ul className="list-none p-0 my-0 text-base overflow-y-scroll max-h-60">
 						{results.map((product) => (

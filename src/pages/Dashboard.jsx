@@ -11,6 +11,7 @@ import { sortByProductName } from "../utils/sortter";
 import Input from "../components/Form/Input";
 import { ProductActionButton, ProductName } from "../components/ProductList";
 import { EmptyList, HeaderListItem, List, ListItem } from "../components/List";
+import { Card, CardTitle } from "../components/Card";
 
 function Dashboard() {
 	const products = useProducts();
@@ -44,28 +45,24 @@ function DailyOrderCount() {
 		<>
 			<h2 className="text-center mt-10">Dashboard</h2>
 			<div className="flex flex-col items-center">
-				<div className="card bg-gray-800 w-96 h-72">
-					<div className="card-body">
-						<h3 className="card-title h-12">
-							How many jewelry orders were completed today?
-						</h3>
-						<Input
-							type="number"
-							value={quantity}
-							onChange={({ target }) => setQuantity(target.value)}
-						/>
-						<div className="card-actions justify-end">
-							<button
-								className={`btn btn-primary mt-3 ${
-									quantity === "" ? "btn-disabled" : ""
-								}`}
-								onClick={confirmQuantity}
-							>
-								Confirm
-							</button>
-						</div>
-					</div>
-				</div>
+				<Card className="w-96 h-72">
+					<CardTitle className="mb-3">
+						How many jewelry orders were completed today?
+					</CardTitle>
+					<Input
+						type="number"
+						value={quantity}
+						onChange={({ target }) => setQuantity(target.value)}
+					/>
+					<button
+						className={`btn btn-primary btn-block mt-3 ${
+							quantity === "" ? "btn-disabled" : ""
+						}`}
+						onClick={confirmQuantity}
+					>
+						Confirm
+					</button>
+				</Card>
 			</div>
 		</>
 	);
@@ -78,6 +75,10 @@ function RequestedProducts({ products }) {
 	const requestedProducts = products.filter(
 		(product) => product.status === "Requested"
 	);
+
+	if (requestedProducts.length === 0) {
+		return <EmptyList message="No products to display" />;
+	}
 
 	const disableButtonIfEmpty =
 		requestedProducts.length === 0 ? "btn-disabled" : "";
@@ -207,7 +208,7 @@ function OrderedProducts({ products }) {
 	);
 
 	if (orderedProducts.length === 0) {
-		return <EmptyList message="No tickets to display" />;
+		return <EmptyList message="No products to display" />;
 	}
 
 	return (
