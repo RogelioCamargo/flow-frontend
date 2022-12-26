@@ -31,7 +31,7 @@ function ProductQuantity({ product, className }) {
 	);
 }
 
-function ProductInfo({ product, className }) {
+function ProductDetails({ product, className }) {
 	return (
 		<div className={`flex items-center ${className}`}>
 			{product?.purchaseLink ? (
@@ -48,8 +48,8 @@ function ProductInfo({ product, className }) {
 			) : null}
 			{product.status !== "None" ? (
 				<div
-					className={`badge badge-${
-						product.status === "Requested" ? "primary" : "secondary"
+					className={`badge ${
+						product.status === "Requested" ? "badge-primary" : "badge-secondary"
 					} badge-sm mr-2`}
 				>
 					{product.status}
@@ -89,7 +89,7 @@ function ProductActionButton({ color = "primary", ...props } = {}) {
 export {
 	ProductName,
 	ProductQuantity,
-	ProductInfo,
+	ProductDetails,
 	ProductTimestamps,
 	ProductActionButton,
 };

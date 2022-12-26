@@ -21,12 +21,6 @@ function HeaderListItem({
 	className = "",
 	...props
 } = {}) {
-	console.log(
-		getListItemStyles({
-			numOfCols,
-			className,
-		})
-	);
 	return (
 		<li
 			className={`${getListItemStyles({

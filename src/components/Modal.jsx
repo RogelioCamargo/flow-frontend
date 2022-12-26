@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext } from "react";
 import { CloseIcon } from "../icons";
 import { useEffect } from "react";
+import { Card } from "./Card";
 
 const callAll =
 	(...fns) =>
@@ -53,7 +54,7 @@ const ModalConfirmButton = ({ className, children, onClick }) => {
 	);
 };
 
-const ModalContentsBase = ({ children, props, focusOnInput = null } = {}) => {
+const ModalContentsBase = ({ children, focusOnInput = null } = {}) => {
 	const [isOpen] = useContext(ModalContext);
 
 	useEffect(() => {
@@ -69,11 +70,7 @@ const ModalContentsBase = ({ children, props, focusOnInput = null } = {}) => {
 			}`}
 		>
 			<div className="relative top-40 mx-auto max-w-sm">
-				<div className="card w-96 bg-neutral text-neutral-content">
-					<div className="card-body" {...props}>
-						{children}
-					</div>
-				</div>
+				<Card className="w-96">{children}</Card>
 			</div>
 		</div>
 	);
