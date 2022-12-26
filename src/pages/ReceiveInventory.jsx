@@ -10,8 +10,9 @@ import {
 } from "../components/Modal";
 import { useProducts, useUpdateProduct } from "../hooks/products";
 import { sortByProductName } from "../utils/sortter";
-import ProductActionList from "../components/ProductActionList";
+import { ProductActionButton, ProductName } from "../components/ProductList";
 import useFocusInput from "../hooks/useFocusInput";
+import { HeaderListItem, List, ListItem } from "../components/List";
 
 function ReceiveInventory() {
 	const products = useProducts();
@@ -25,10 +26,25 @@ function ReceiveInventory() {
 		<>
 			<div className="prose md:max-w-lg lg:max-w-3xl mx-auto">
 				<h2 className="text-center mt-10 mb-0">Receive Inventory</h2>
-				<ProductActionList
-					products={orderedProducts}
-					ActionButton={ReceiveSelectedProductModal}
-				/>
+				<List>
+					<HeaderListItem numOfCols={3} style={{ minWidth: "350px" }}>
+						<div className="col-span-2">Name</div>
+						<div>Action</div>
+					</HeaderListItem>
+					{orderedProducts.map((product, index) => (
+						<ListItem
+							numOfCols={3}
+							key={product._id}
+							index={index}
+							style={{ minWidth: "350px" }}
+						>
+							<ProductName product={product} className="col-span-2" />
+							<div>
+								<ReceiveSelectedProductModal product={product} />
+							</div>
+						</ListItem>
+					))}
+				</List>
 			</div>
 			<ReceiveProductModal products={products} />
 		</>
@@ -140,7 +156,7 @@ function ReceiveSelectedProductModal({ product }) {
 	return (
 		<Modal>
 			<ModalOpenButton>
-				<button className="btn btn-primary btn-xs md:btn-sm">Receive</button>
+				<ProductActionButton>Receive</ProductActionButton>
 			</ModalOpenButton>
 			<ModalContent title="Confirm" focusOnInput={focusOnInput}>
 				<ModalDismissButton onClick={() => setQuantity("")} />

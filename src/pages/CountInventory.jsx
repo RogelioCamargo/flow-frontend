@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Input from "../components/Form/Input";
 import { useProducts, useUpdateProduct } from "../hooks/products";
 import { sortByProductCategory, sortByProductName } from "../utils/sortter";
-import ProductActionList from "../components/ProductActionList";
+import { ProductActionButton, ProductName } from "../components/ProductList";
+import { HeaderListItem, List, ListItem } from "../components/List";
 
 function CountInventory() {
 	const products = useProducts();
@@ -156,17 +157,30 @@ function ProductsRequesting({ products }) {
 	return (
 		<>
 			<h2 className="text-center mb-0">Requesting</h2>
-			<ProductActionList
-				products={requestedProducts}
-				ActionButton={({ product }) => (
-					<button
-						className="btn btn-error btn-xs md:btn-sm"
-						onClick={() => unrequestProduct(product)}
+			<List>
+				<HeaderListItem numOfCols={3} style={{ minWidth: "350px" }}>
+					<div className="col-span-2">Name</div>
+					<div>Action</div>
+				</HeaderListItem>
+				{requestedProducts.map((product, index) => (
+					<ListItem
+						numOfCols={3}
+						key={product._id}
+						index={index}
+						style={{ minWidth: "350px" }}
 					>
-						Unrequest
-					</button>
-				)}
-			/>
+						<ProductName className="col-span-2" product={product} />
+						<div>
+							<ProductActionButton
+								color="error"
+								onClick={() => unrequestProduct(product)}
+							>
+								Unrequest
+							</ProductActionButton>
+						</div>
+					</ListItem>
+				))}
+			</List>
 		</>
 	);
 }

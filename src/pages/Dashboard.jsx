@@ -9,9 +9,8 @@ import {
 import { toast } from "react-toastify";
 import { sortByProductName } from "../utils/sortter";
 import Input from "../components/Form/Input";
-import ProductActionList from "../components/ProductActionList";
+import { ProductActionButton, ProductName } from "../components/ProductList";
 import { EmptyList, HeaderListItem, List, ListItem } from "../components/List";
-import { Link } from "react-router-dom";
 
 function Dashboard() {
 	const products = useProducts();
@@ -175,17 +174,29 @@ function RequestedProducts({ products }) {
 					Mark All As Ordered
 				</button>
 			</div>
-			<ProductActionList
-				products={requestedProducts}
-				ActionButton={({ product }) => (
-					<button
-						className="btn btn-primary btn-xs md:btn-sm"
-						onClick={() => markProductAsOrdered(product)}
+			<List>
+				<HeaderListItem numOfCols={3} style={{ minWidth: "350px" }}>
+					<div className="col-span-2">Name</div>
+					<div>Action</div>
+				</HeaderListItem>
+				{requestedProducts.map((product, index) => (
+					<ListItem
+						numOfCols={3}
+						key={product._id}
+						index={index}
+						style={{ minWidth: "350px" }}
 					>
-						Mark Ordered
-					</button>
-				)}
-			/>
+						<ProductName className="col-span-2" product={product} />
+						<div>
+							<ProductActionButton
+								onClick={() => markProductAsOrdered(product)}
+							>
+								Mark Ordered
+							</ProductActionButton>
+						</div>
+					</ListItem>
+				))}
+			</List>
 		</>
 	);
 }
@@ -203,26 +214,18 @@ function OrderedProducts({ products }) {
 		<>
 			<h2 className="text-center mb-0">Ordered Products</h2>
 			<List>
-				<HeaderListItem className="grid-cols-3">
+				<HeaderListItem numOfCols={3}>
 					<div className="col-span-2">Name</div>
 					<div>Date Ordered</div>
 				</HeaderListItem>
 				{orderedProducts.map((product, index) => (
 					<ListItem
-						className="grid-cols-3"
+						numOfCols={3}
 						key={product._id}
 						index={index}
 						style={{ minWidth: "350px" }}
 					>
-						<Link
-							className="no-underline col-span-2"
-							to={`/product/${product._id}`}
-						>
-							<div className="font-bold break-words-and-wrap">
-								{product.name}
-							</div>
-							<div className="text-sm opacity-50">{product.category.name}</div>
-						</Link>
+						<ProductName product={product} className="col-span-2" />
 						<div>{formatDate(product?.lastOrderedDate) ?? "--"}</div>
 					</ListItem>
 				))}

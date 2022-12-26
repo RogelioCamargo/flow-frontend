@@ -54,17 +54,12 @@ function TicketList({ tickets }) {
 
 	return (
 		<List>
-			<HeaderListItem className="grid-cols-2" style={{ minWidth: "700px" }}>
+			<HeaderListItem style={{ minWidth: "700px" }}>
 				<div>Tracking Number</div>
 				<div>Notes</div>
 			</HeaderListItem>
 			{tickets.map((ticket, index) => (
-				<ListItem
-					key={ticket._id}
-					className="grid-cols-2"
-					index={index}
-					style={{ minWidth: "700px" }}
-				>
+				<ListItem key={ticket._id} index={index} style={{ minWidth: "700px" }}>
 					<Link className="no-underline" to={`/tickets/${ticket._id}`}>
 						<div className="font-bold">{ticket.trackingNumber}</div>
 						<div className="opacity-50">
