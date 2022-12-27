@@ -12,19 +12,13 @@ function List({ children }) {
 	);
 }
 
-const getListItemStyles = ({ numOfCols, className }) =>
-	`px-5 grid grid-cols-${numOfCols} items-center text-xs ${className}`;
+const getListItemStyles = ({ className }) =>
+	`px-5 grid items-center text-xs ${className}`;
 
-function HeaderListItem({
-	children,
-	numOfCols = 2,
-	className = "",
-	...props
-} = {}) {
+function HeaderListItem({ children, className = "", ...props } = {}) {
 	return (
 		<li
 			className={`${getListItemStyles({
-				numOfCols,
 				className,
 			})} h-14 font-bold bg-base-300 border-b border-gray-500 uppercase`}
 			{...props}
@@ -34,16 +28,10 @@ function HeaderListItem({
 	);
 }
 
-function ListItem({
-	children,
-	numOfCols = 2,
-	className = "",
-	index,
-	...props
-} = {}) {
+function ListItem({ children, className = "", index, ...props } = {}) {
 	return (
 		<li
-			className={`${getListItemStyles({ numOfCols, className })} ${
+			className={`${getListItemStyles({ className })} ${
 				index % 2 !== 0 ? "bg-base-300" : ""
 			} h-20 md:text-sm`}
 			{...props}

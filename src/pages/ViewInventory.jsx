@@ -80,7 +80,7 @@ function ViewInventory({ filters, setFilters }) {
 					</button>
 				</div>
 				<List>
-					<HeaderListItem numOfCols={7} style={{ minWidth: "800px" }}>
+					<HeaderListItem className="grid-cols-7" style={{ minWidth: "800px" }}>
 						<div className="col-span-3">Name</div>
 						<div>Quantity</div>
 						<div>Details</div>
@@ -90,7 +90,7 @@ function ViewInventory({ filters, setFilters }) {
 					{sortByProductName(productsFilteredBySearch).map((product, index) => {
 						return (
 							<ListItem
-								numOfCols={7}
+								className="grid-cols-7"
 								key={product._id}
 								index={index}
 								style={{ minWidth: "800px" }}
