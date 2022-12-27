@@ -153,13 +153,13 @@ function ProductsRequesting({ products }) {
 		<>
 			<h2 className="text-center mb-0">Requesting</h2>
 			<List>
-				<HeaderListItem numOfCols={3} style={{ minWidth: "350px" }}>
+				<HeaderListItem className="grid-cols-3" style={{ minWidth: "350px" }}>
 					<div className="col-span-2">Name</div>
 					<div>Action</div>
 				</HeaderListItem>
 				{requestedProducts.map((product, index) => (
 					<ListItem
-						numOfCols={3}
+						className="grid-cols-3"
 						key={product._id}
 						index={index}
 						style={{ minWidth: "350px" }}

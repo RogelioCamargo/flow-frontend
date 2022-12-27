@@ -31,13 +31,13 @@ function ReceiveInventory() {
 			<div className="prose md:max-w-lg lg:max-w-3xl mx-auto">
 				<h2 className="text-center mt-10 mb-0">Receive Inventory</h2>
 				<List>
-					<HeaderListItem numOfCols={3} style={{ minWidth: "350px" }}>
+					<HeaderListItem className="grid-cols-3" style={{ minWidth: "350px" }}>
 						<div className="col-span-2">Name</div>
 						<div>Action</div>
 					</HeaderListItem>
 					{orderedProducts.map((product, index) => (
 						<ListItem
-							numOfCols={3}
+							className="grid-cols-3"
 							key={product._id}
 							index={index}
 							style={{ minWidth: "350px" }}
