@@ -19,14 +19,14 @@ function Dashboard() {
 
   return (
     <div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
-      <DailyOrderCount />
+      <DecrementSupplyCounts />
       <RequestedProducts products={productsSortedByName} />
       <OrderedProducts products={productsSortedByName} />
     </div>
   );
 }
 
-function DailyOrderCount() {
+function DecrementSupplyCounts() {
   const [quantity, setQuantity] = useState("");
   const { mutate: decrementSupplyCounts } = useDecrementSupplyCounts();
 
