@@ -150,7 +150,7 @@ function ProductsRequesting({ products }) {
   };
 
   return (
-    <div className="w-full">
+    <div className="md:max-w-lg md:mx-auto lg:w-full">
       <h2 className="text-center mb-0">Requesting</h2>
       <List>
         <HeaderListItem className="grid-cols-3" style={{ minWidth: "350px" }}>
