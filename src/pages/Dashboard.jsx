@@ -11,7 +11,7 @@ import { sortByProductName } from "../utils/sortter";
 import Input from "../components/Form/Input";
 import { ProductActionButton, ProductName } from "../components/ProductList";
 import { EmptyList, HeaderListItem, List, ListItem } from "../components/List";
-import { Card, CardTitle } from "../components/Card";
+import { Card } from "../components/Card";
 
 function Dashboard() {
   const products = useProducts();
@@ -27,41 +27,50 @@ function Dashboard() {
 }
 
 function DecrementSupplyCounts() {
-  const [quantity, setQuantity] = useState("");
   const { mutate: decrementSupplyCounts } = useDecrementSupplyCounts();
 
-  const confirmQuantity = () => {
-    decrementSupplyCounts({ orders: quantity });
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-    toast.success("Operation Supply Quantities Updated", {
+    const formData = new FormData(event.target);
+    const counts = {};
+    for (const [name, value] of formData) {
+      counts[name] = value !== "" ? Number(value) : 0;
+    }
+
+    decrementSupplyCounts(counts);
+
+    toast.success("Operation Supply Quantities Decremented", {
       position: "bottom-center",
       theme: "colored",
     });
-
-    setQuantity("");
   };
 
   return (
     <>
       <h2 className="text-center mt-10">Dashboard</h2>
-      <div className="flex flex-col items-center">
-        <Card className="w-96 h-72">
-          <CardTitle className="mb-3">
-            How many jewelry orders were completed today?
-          </CardTitle>
-          <Input
-            type="number"
-            value={quantity}
-            onChange={({ target }) => setQuantity(target.value)}
-          />
-          <button
-            className={`btn btn-primary btn-block mt-3 ${
-              quantity === "" ? "btn-disabled" : ""
-            }`}
-            onClick={confirmQuantity}
-          >
-            Confirm
-          </button>
+      <div className="px-1 md:px-0">
+        <Card className="mb-3">
+          <h3 className="m-0">Orders Completed</h3>
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-2 gap-x-1">
+              <h4 className="col-span-2">Jewelry</h4>
+              <Input name="jewelryM" type="number" label="Medium Orders" />
+              <Input name="jewelryL" type="number" label="Large Orders" />
+            </div>
+            <div className="grid grid-cols-2 gap-x-1">
+              <h4 className="col-span-2">Handbag</h4>
+              <Input name="handbagS" type="number" label="Small Orders" />
+              <Input name="handbagM" type="number" label="Medium Orders" />
+              <Input name="handbagL" type="number" label="Large Orders" />
+              <Input name="handbagXL" type="number" label="X-Large Orders" />
+            </div>
+            <input
+              type="submit"
+              value="Confirm"
+              className="btn btn-primary btn-block mt-8"
+            />
+          </form>
         </Card>
       </div>
     </>
