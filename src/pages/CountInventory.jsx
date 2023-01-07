@@ -12,7 +12,7 @@ function CountInventory() {
   const productsSortedByName = sortByProductName(products);
 
   return (
-    <div className="prose lg:flex lg:gap-10 lg:max-w-5xl mx-auto">
+    <div className="prose lg:flex lg:gap-5 lg:max-w-5xl mx-auto">
       <InventoryCounts products={productsSortedByCategory} />
       <ProductsRequesting products={productsSortedByName} />
     </div>
