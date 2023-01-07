@@ -12,7 +12,7 @@ function CountInventory() {
   const productsSortedByName = sortByProductName(products);
 
   return (
-    <div className="prose md:max-w-lg lg:max-w-2xl mx-auto">
+    <div className="prose lg:flex lg:gap-10 lg:max-w-5xl mx-auto">
       <InventoryCounts products={productsSortedByCategory} />
       <ProductsRequesting products={productsSortedByName} />
     </div>
@@ -60,7 +60,7 @@ function InventoryCounts({ products }) {
   };
 
   return (
-    <>
+    <div>
       <h2 className="text-center mt-10">Count Inventory</h2>
       <div className="flex flex-col items-center">
         {index === products.length ? (
@@ -129,7 +129,7 @@ function InventoryCounts({ products }) {
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -150,7 +150,7 @@ function ProductsRequesting({ products }) {
   };
 
   return (
-    <>
+    <div className="w-full">
       <h2 className="text-center mb-0">Requesting</h2>
       <List>
         <HeaderListItem className="grid-cols-3" style={{ minWidth: "350px" }}>
@@ -180,7 +180,7 @@ function ProductsRequesting({ products }) {
           ))
         )}
       </List>
-    </>
+    </div>
   );
 }
 
